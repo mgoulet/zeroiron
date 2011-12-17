@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  android:background="@drawable/mainbackground" android:weightSum="1">
+  
+  	<LinearLayout
+  		android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="56dp">
+     	<CheckBox android:id="@+id/checkBox1"
+     		android:text="Scoreboard Backdrop"
+     		android:layout_height="wrap_content" android:layout_width="fill_parent"
+     		android:layout_weight="1"/>
+	</LinearLayout>
+	
+    <LinearLayout
+    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+     	android:layout_weight="3">
+        <TextView android:id="@+id/textView1"
+        	android:layout_height="wrap_content" android:layout_width="160dp"
+        	android:textSize="6pt"
+        	android:text="Created by Martin Goulet twitter: @martingoulet. This app guarantees better golf scores or your money back. :)"
+        	android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+		<ImageView android:layout_width="150dp"
+			android:layout_weight="1"
+			android:id="@+id/imageView1"
+			android:src="@drawable/marty200x200" android:layout_height="150dp"/>     		
+	</LinearLayout>
+      	
+  	<TextView android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_list"/>
+     
+</LinearLayout>

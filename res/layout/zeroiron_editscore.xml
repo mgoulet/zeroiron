@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  	<LinearLayout
+  		xmlns:android="http://schemas.android.com/apk/res/android"
+  		android:orientation="horizontal"
+  		android:layout_width="match_parent"
+ 		android:layout_height="wrap_content">
+    	<TextView android:text="Hole: "
+    		android:id="@+id/textView_holeLabel"
+    		android:layout_height="wrap_content"
+    		android:textAppearance="?android:attr/textAppearanceLarge"
+    		android:layout_width="wrap_content">
+    	</TextView>
+    	<TextView android:text="99"
+    		android:id="@+id/textView_holeValue"
+    		android:layout_height="wrap_content"
+    		android:textAppearance="?android:attr/textAppearanceLarge"
+    		android:layout_width="wrap_content">
+    	</TextView>
+    </LinearLayout>
+    <RadioGroup android:id="@+id/radioGroup1"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+    </RadioGroup>
+    <TextView android:layout_width="wrap_content"
+    	android:id="@+id/textView_par"
+    	android:text="Par"
+    	android:layout_height="wrap_content"
+    	android:textAppearance="?android:attr/textAppearanceLarge">
+    </TextView>
+    <Spinner android:layout_width="match_parent"
+    	android:id="@+id/spinner_par"
+    	android:layout_height="wrap_content">
+    </Spinner>
+    <TextView android:id="@+id/score_text"
+    	android:textAppearance="?android:attr/textAppearanceLarge"
+    	android:layout_height="wrap_content"
+    	android:text="Score"
+    	android:layout_width="wrap_content">
+   	</TextView>
+    <Spinner android:layout_width="match_parent"
+    	android:id="@+id/spinner_score"
+    	android:layout_height="wrap_content">
+    </Spinner>
+	<TableLayout android:orientation="horizontal"
+		android:stretchColumns="0, 1"
+		android:layout_height="87dp"
+		android:layout_width="fill_parent">
+		<TableRow>
+			<Button android:text="Save" android:layout_height="wrap_content" android:id="@+id/save_button" android:layout_width="wrap_content"></Button>
+			<Button android:text="Cancel" android:layout_height="wrap_content" android:id="@+id/cancel_button" android:layout_width="wrap_content"></Button>
+		</TableRow>
+	</TableLayout>    
+    
+</LinearLayout>
