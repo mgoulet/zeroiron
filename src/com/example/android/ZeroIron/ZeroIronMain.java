@@ -20,21 +20,27 @@ public class ZeroIronMain extends TabActivity {
 		Resources res = getResources();
 		TabHost tabHost = getTabHost();
 		TabHost.TabSpec spec;
+
+		intent = new Intent().setClass(this, ZeroIronGamesList.class);
+        spec = tabHost.newTabSpec("Tab1").setIndicator("Games",
+                res.getDrawable(R.drawable.golf32))
+            .setContent(intent);
+		tabHost.addTab(spec);
 		
 		intent = new Intent().setClass(this, ZeroIronScoreBoard.class);
-        spec = tabHost.newTabSpec("Tab1").setIndicator("ScoreBoard",
-                res.getDrawable(R.drawable.golf32))
+        spec = tabHost.newTabSpec("Tab2").setIndicator("ScoreBoard",
+                res.getDrawable(R.drawable.ball32))
             .setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, ZeroIronScoreBoard.class);
-        spec = tabHost.newTabSpec("Tab2").setIndicator("Statistics",
+        spec = tabHost.newTabSpec("Tab3").setIndicator("Statistics",
                 res.getDrawable(R.drawable.pack32))
             .setContent(intent);
 		tabHost.addTab(spec);
 		
 		intent = new Intent().setClass(this, ZeroIronSettings.class);
-        spec = tabHost.newTabSpec("Tab3").setIndicator("Settings",
+        spec = tabHost.newTabSpec("Tab4").setIndicator("Settings",
                 res.getDrawable(R.drawable.gear32))
             .setContent(intent);
 		tabHost.addTab(spec);

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="0, 1">
+    <TableRow>
+	    <LinearLayout
+	    	android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+	     	android:layout_weight="80">
+	        <TextView android:id="@+id/textCourseName"
+	        	android:layout_height="wrap_content"
+	        	android:layout_width="fill_parent"
+	        	android:textSize="7pt"
+	        	android:textStyle="bold"
+	        	android:text="COURSENAME"
+	        	android:textAppearance="?android:attr/textAppearanceMedium"/>
+	        <TextView android:id="@+id/textGameDate"
+	        	android:layout_height="wrap_content"
+	        	android:layout_width="fill_parent"
+	        	android:textSize="6pt"
+	        	android:text="GAMEDATE"
+	        	android:textAppearance="?android:attr/textAppearanceMedium"/>		
+		</LinearLayout>
+        <TextView android:id="@+id/textGameScore"
+        	android:layout_height="50dp"
+        	android:layout_width="wrap_content"
+        	android:layout_weight="10"
+        	android:textSize="7pt"
+        	android:textStyle="bold"
+        	android:text="0"
+        	android:textAppearance="?android:attr/textAppearanceMedium"/>    
+		<ImageView android:id="@+id/imageView1"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:src="@drawable/arrow32" android:layout_height="50dp"/> 
+	</TableRow>
+	
+</TableLayout>

@@ -40,10 +40,16 @@ import android.widget.Toast;
  */
 public class ZeroIronDbAdapter {
 
+	public static final String KEY_GAME_ID = "_id";
+	public static final String KEY_GAME_COURSE_NAME = "course";
+	public static final String KEY_GAME_DATE = "date";
+	public static final String KEY_GAME_SCORE = "score";
+	public static final String KEY_GAME_WEATHER = "weather";
+	
+	public static final String KEY_ROWID = "_id";
     public static final String KEY_HOLE = "hole";
     public static final String KEY_PAR = "par";
     public static final String KEY_SCORE = "score";
-    public static final String KEY_ROWID = "_id";
     
     public static final String KEY_SETTING = "setting";
     public static final String KEY_VALUE = "value";
@@ -55,6 +61,10 @@ public class ZeroIronDbAdapter {
     /**
      * Database creation sql statement
      */
+    private static final String DATABASE_CREATE_GAMES =
+            "create table if not exists games (_id integer primary key autoincrement, "
+            + KEY_GAME_COURSE_NAME + " text not null, " + KEY_GAME_DATE + " text not null, " + KEY_GAME_SCORE + " integer, " + KEY_GAME_WEATHER + " integer);";
+            
     private static final String DATABASE_CREATE_SCORES =
         "create table if not exists scores (_id integer primary key autoincrement, "
         + "hole text not null, par text not null, score text not null);";
@@ -64,6 +74,7 @@ public class ZeroIronDbAdapter {
                     + "setting text not null, value integer);";
 
     private static final String DATABASE_NAME = "data";
+    private static final String DATABASE_GAMES = "games";
     private static final String DATABASE_SCORES = "scores";
     private static final String DATABASE_SETTINGS = "settings";
     private static final int DATABASE_VERSION = 2;
@@ -78,7 +89,7 @@ public class ZeroIronDbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-
+        	db.execSQL(DATABASE_CREATE_GAMES);
             db.execSQL(DATABASE_CREATE_SCORES);
             db.execSQL(DATABASE_CREATE_SETTINGS);
         }
@@ -161,6 +172,8 @@ public class ZeroIronDbAdapter {
     	return count;
     }
 
+/////////////////////////////////////////////
+
     //Method that attempts to create a settings database if it does not exist.
     public boolean settingsTableRebuild() {
     	try {
@@ -240,8 +253,84 @@ public class ZeroIronDbAdapter {
         return result;
 
     }
+
+/////////////////////////////////////////////
+    
+    public boolean createGamesTableIfRequired() {
+    	
+    	//test to see if table is actually deleted.
+    	Cursor x;
+    	try {
+    		x = mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_NAME,
+	        		KEY_GAME_DATE, KEY_GAME_SCORE, KEY_GAME_WEATHER}, null, null, null, null, null);
+    	} catch (Exception e) {
+    		int ert=0;
+    		ert++;
+    	}
+    	
+    	try {
+    		mDb.execSQL(DATABASE_CREATE_GAMES);
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error creating games table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}    	
+    	return true;
+    }
+    
+    public Cursor fetchAllGames() { 
+    	try {
+	        return mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_NAME,
+	        		KEY_GAME_DATE, KEY_GAME_SCORE, KEY_GAME_WEATHER}, null, null, null, null, null);
+    	} catch (Exception e ) {
+    		Toast.makeText(this.mCtx, "Error fetching all games.", Toast.LENGTH_SHORT).show();
+    		return null;
+    	}
+
+    }
+    
+    public boolean writeGame(ZeroIronGameStructure game) {    	
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_GAME_COURSE_NAME, game.getCourseName());
+        initialValues.put(KEY_GAME_DATE, game.getDate().toString());
+        initialValues.put(KEY_GAME_SCORE, game.getGameScore());
+        initialValues.put(KEY_GAME_WEATHER, 0);
+
+        return mDb.insert(DATABASE_GAMES, null, initialValues) > 0;
+
+    }
+    
+    public boolean deleteAllGames() {
+    	
+    	try {
+    		mDb.delete(DATABASE_GAMES, null, null);
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error deleting games table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	return true;
+    }
+   
+    public boolean deleteGame(ZeroIronGameStructure game) {
+    	
+    	return false;
+    }
+    
+    public boolean dropGamesTable() {
+    	try {
+    		mDb.execSQL("drop table games");
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error dropping games table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	return true;
+    }
     
 }
+
+
+
 
 
 

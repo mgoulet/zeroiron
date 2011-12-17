@@ -18,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-
 public class ZeroIronSettings extends Activity {
 
 	private ZeroIronDbAdapter mDbAdapter;

@@ -5,6 +5,9 @@
     <string name="empty_list">Empty</string>
     <string name="menu_reset">RESET</string>
     <string name="menu_random">RANDOM</string>
+    <string name="menu_new_game">NEW</string>
+    <string name="menu_gen_games">GEN</string>
+    <string name="menu_clear_games">CLEAR</string>
     <string-array name="par_values">
         <item>Par 3</item>
         <item>Par 4</item>
