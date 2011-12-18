@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:background="@android:drawable/alert_dark_frame">
+	<TableRow>
+<!--
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:id="@+id/one"
+			android:text="One"
+			android:minWidth="80dp"
+			android:minHeight="80dp"
+			 />
+-->
+		<ImageButton
+			android:id="@+id/editGameButton"
+			android:src="@drawable/edit32"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"/>
+		<ImageButton
+			android:id="@+id/deleteGameButton"
+			android:src="@drawable/delete32"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"/>
+	</TableRow>
+</TableLayout>

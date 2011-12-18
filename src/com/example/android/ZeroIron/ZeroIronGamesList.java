@@ -1,32 +1,23 @@
 package com.example.android.ZeroIron;
 
-import java.util.Random;
-import java.util.Calendar;
-import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
-import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
-import android.view.KeyEvent;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
-
 
 public class ZeroIronGamesList extends ListActivity implements OnItemLongClickListener {
 
-	public GestureDetector mGestureDetector;
-	
 	private ZeroIronDbAdapter mDbAdapter;
 	public static final int NEW_ID = Menu.FIRST;
 	public static final int GEN_ID = Menu.FIRST+1;
@@ -69,16 +60,6 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         
         setListAdapter(cursor);
        
-    }
-    
-    @Override
-	public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-    
-    	//Testing!
-    	int ert=0;
-    	ert++;
-    	
-    	return true;
     }
     
     @Override
@@ -214,14 +195,23 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
-		// TODO Auto-generated method stub
 
-		//toggle the new context menu!
-		//...
-		
-		
-		
+		ZeroIronCustomGamePopupWindow popup = new ZeroIronCustomGamePopupWindow(arg1, arg2); 
+		popup.showLikeQuickAction();
+
 		return true;
 	}
 	
+	public void editGameButtonClicked(int rowId) {
+		int ert=0;
+		ert++;
+	}
+	
+	public void deleteGameButtonClicked(int rowId) {
+		int ert=0;
+		ert++;
+	}
+	
 }
+
+
