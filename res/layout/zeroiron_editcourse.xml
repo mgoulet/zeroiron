@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+	<LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:orientation="vertical"
+	  android:layout_width="match_parent"
+	  android:layout_height="wrap_content"
+	  android:layout_weight="100">
+			<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Course" android:textColor="#FFFFFF" android:id="@+id/textCourseLabel"></TextView>
+			<EditText android:layout_height="wrap_content" android:inputType="text" android:id="@+id/editCourseName" android:layout_width="match_parent">
+				<requestFocus></requestFocus>
+			</EditText>
+		  	<TextView android:layout_height="wrap_content" android:textColor="#FFFFFF" android:layout_width="wrap_content" android:id="@+id/textLocationLabel" android:textStyle="bold" android:text="Location" android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
+		  	<EditText android:layout_height="wrap_content" android:inputType="text" android:id="@+id/editCourseLocation" android:layout_width="match_parent"></EditText>
+		  <TextView android:textColor="#FFFFFF" android:layout_width="fill_parent" android:id="@+id/textParLabel" android:textStyle="bold" android:text="Par" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content"></TextView>
+		  <RadioGroup android:id="@+id/radioGroup1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+		      <RadioButton android:text="Three" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/radioPar0" android:checked="true"></RadioButton>
+		      <RadioButton android:text="Four" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/radioPar1"></RadioButton>
+		      <RadioButton android:text="Five" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/radioPar2"></RadioButton>
+		  </RadioGroup>
+		  <TextView android:textColor="#FFFFFF" android:layout_width="fill_parent" android:id="@+id/textSizeLabel" android:textStyle="bold" android:text="Size" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content"></TextView>
+		  <RadioGroup android:id="@+id/radioGroup1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+		      <RadioButton android:text="9 Holes" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/radioSize0" android:checked="true"></RadioButton>
+		      <RadioButton android:text="18 Holes" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/radioSize1"></RadioButton>
+		  </RadioGroup>
+    </LinearLayout>
+    
+  	<TableLayout android:layout_width="fill_parent" android:stretchColumns="0, 1" android:orientation="horizontal" android:layout_height="wrap_content">
+  		<TableRow>
+  			<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageOk" android:src="@drawable/b_ok"></ImageButton>
+  			<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageCancel" android:src="@drawable/b_cancel"></ImageButton>
+  		</TableRow>
+  	</TableLayout>    
+    
+</LinearLayout>

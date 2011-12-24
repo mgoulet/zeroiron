@@ -40,12 +40,18 @@ import android.widget.Toast;
  */
 public class ZeroIronDbAdapter {
 
+	public static final String KEY_COURSE_ID = "_id";
+	public static final String KEY_COURSE_NAME = "name";
+	public static final String KEY_COURSE_LOCATION = "location";
+	public static final String KEY_COURSE_PAR = "par";
+	public static final String KEY_COURSE_SIZE = "size";		
+	
 	public static final String KEY_GAME_ID = "_id";
 	public static final String KEY_GAME_COURSE_NAME = "course";
 	public static final String KEY_GAME_DATE = "date";
 	public static final String KEY_GAME_SCORE = "score";
 	public static final String KEY_GAME_WEATHER = "weather";
-	
+
 	public static final String KEY_ROWID = "_id";
     public static final String KEY_HOLE = "hole";
     public static final String KEY_PAR = "par";
@@ -61,6 +67,11 @@ public class ZeroIronDbAdapter {
     /**
      * Database creation sql statement
      */
+    private static final String DATABASE_CREATE_COURSES =
+            "create table if not exists courses (_id integer primary key autoincrement, "
+            + KEY_COURSE_NAME + " text not null, " + KEY_COURSE_LOCATION + " text not null, "
+            + KEY_COURSE_PAR + " integer, " + KEY_COURSE_SIZE + " integer);";
+                
     private static final String DATABASE_CREATE_GAMES =
             "create table if not exists games (_id integer primary key autoincrement, "
             + KEY_GAME_COURSE_NAME + " text not null, " + KEY_GAME_DATE + " text not null, " + KEY_GAME_SCORE + " integer, " + KEY_GAME_WEATHER + " integer);";
@@ -74,6 +85,7 @@ public class ZeroIronDbAdapter {
                     + "setting text not null, value integer);";
 
     private static final String DATABASE_NAME = "data";
+    private static final String DATABASE_COURSES = "courses";
     private static final String DATABASE_GAMES = "games";
     private static final String DATABASE_SCORES = "scores";
     private static final String DATABASE_SETTINGS = "settings";
@@ -89,6 +101,7 @@ public class ZeroIronDbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+        	db.execSQL(DATABASE_CREATE_COURSES);
         	db.execSQL(DATABASE_CREATE_GAMES);
             db.execSQL(DATABASE_CREATE_SCORES);
             db.execSQL(DATABASE_CREATE_SETTINGS);
@@ -116,7 +129,117 @@ public class ZeroIronDbAdapter {
     public void close() {
         mDbHelper.close();
     }
+    
+////////////////////////////////////////////////////////////////////////
+    
+    public boolean createCoursesTableIfRequired() {
+    	
+    	//test to see if table is actually deleted.
+    	Cursor x;
+    	try {
+    		x = mDb.query(DATABASE_COURSES, new String[] {KEY_ROWID, KEY_COURSE_NAME,
+	        		KEY_COURSE_LOCATION, KEY_COURSE_PAR, KEY_COURSE_SIZE}, null, null, null, null, null);
+    	} catch (Exception e) {
+    		int ert=0;
+    		ert++;
+    	}
+    	
+    	try {
+    		mDb.execSQL(DATABASE_CREATE_COURSES);
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error creating courses table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}    	
+    	return true;
+    }
+    
 
+    public Cursor fetchAllCourses() { 
+    	try {
+	        return mDb.query(DATABASE_COURSES, new String[] {KEY_ROWID, KEY_COURSE_NAME,
+	        		KEY_COURSE_LOCATION, KEY_COURSE_PAR, KEY_COURSE_SIZE}, null, null, null, null, null);
+    	} catch (Exception e ) {
+    		Toast.makeText(this.mCtx, "Error fetching all courses.", Toast.LENGTH_SHORT).show();
+    		return null;
+    	}
+
+    }
+    
+    public boolean writeCourse(ZeroIronCourseStructure oldCourseStructure, ZeroIronCourseStructure newCourseStructure) { 
+    	
+    	if (oldCourseStructure == null) {
+    		
+    		//new record
+	        ContentValues initialValues = new ContentValues();
+	        initialValues.put(KEY_COURSE_NAME, newCourseStructure.getCourseName());
+	        initialValues.put(KEY_COURSE_LOCATION, newCourseStructure.getCourseLocation());
+	        initialValues.put(KEY_COURSE_PAR, newCourseStructure.getCoursePar());
+	        initialValues.put(KEY_COURSE_SIZE, newCourseStructure.getCourseSize());
+	
+	        return mDb.insert(DATABASE_COURSES, null, initialValues) > 0;
+	        
+    	} else {
+    		
+    		ContentValues newValues = new ContentValues();
+    		newValues.put(KEY_COURSE_NAME, newCourseStructure.getCourseName());
+    		newValues.put(KEY_COURSE_LOCATION, newCourseStructure.getCourseLocation());
+    		newValues.put(KEY_COURSE_PAR, newCourseStructure.getCoursePar());
+    		newValues.put(KEY_COURSE_SIZE, newCourseStructure.getCourseSize());
+    		
+    		ContentValues oldValues = new ContentValues();
+    		oldValues.put(KEY_COURSE_NAME, "'" + oldCourseStructure.getCourseName() + "'");
+    		
+    		String newTest = newValues.toString();
+    		String oldTest = oldValues.toString();
+    		
+    		return mDb.update(DATABASE_COURSES, newValues, oldValues.toString(), null) > 0;
+
+    	}
+
+    }
+    
+    public boolean deleteAllCourses() {
+    	
+    	try {
+    		mDb.delete(DATABASE_COURSES, null, null);
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error deleting courses table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	return true;
+    }
+   
+    public boolean deleteCourse(String courseName) {
+    	
+    	try {
+    		
+    		mDb.delete(DATABASE_COURSES, KEY_COURSE_NAME + "='" + courseName + "'", null);
+    		
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error deleting course with name" + courseName + ".", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	int ert=0;
+    	ert++;
+    	
+    	return true;
+    }
+    
+    public boolean dropCoursesTable() {
+    	try {
+    		mDb.execSQL("drop table courses");
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error dropping courses table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	return true;
+    }    
+    
+//////////////////////////////////////////////////////////////////////
+    
     public long createScore(int hole, int par, int score) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_HOLE, hole);

@@ -89,7 +89,6 @@ public class ZeroIronScoreBoard extends ListActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (resultCode == Activity.RESULT_OK && requestCode == EDIT_SCORE) {

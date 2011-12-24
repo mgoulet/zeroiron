@@ -1,5 +1,6 @@
 package com.example.android.ZeroIron;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,9 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	public static final int NEW_ID = Menu.FIRST;
 	public static final int GEN_ID = Menu.FIRST+1;
 	public static final int DEL_ID = Menu.FIRST+2;
+	
+	public static final int GAME_EDIT_ACTIVITY_ID = 0;
+	public static final String GAME_STRUCTURE = "GAME_STRUCTURE";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,7 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 		mDbAdapter.open();
 		
 		mDbAdapter.createGamesTableIfRequired();
+		mDbAdapter.createCoursesTableIfRequired();
 		
 		ListView listView = this.getListView();
 		listView.setOnItemLongClickListener(this);
@@ -66,31 +71,7 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		//Test
-		int ert=0;
-		ert++;
-		//AbstractWindowedCursor awc = (AbstractWindowedCursor)getListAdapter().getItem(position);
-		/*
-		//retrieve record data
-		int index = ((AbstractWindowedCursor)
-						getListAdapter().getItem(position)).getInt(0);
-		int hole = ((AbstractWindowedCursor)
-						getListAdapter().getItem(position)).getInt(1);
-		int par = ((AbstractWindowedCursor)
-						getListAdapter().getItem(position)).getInt(2);
-		int score = ((AbstractWindowedCursor)
-						getListAdapter().getItem(position)).getInt(3);
 
-		//build intent for edit screen
-		Intent i = new Intent(ZeroIronGamesList.this, ZeroIronEditScore.class);
-		i.putExtra("index", index);
-		i.putExtra("hole", hole);
-		i.putExtra("par", par);
-		i.putExtra("score", score);
-		
-		//launch intent
-		startActivityForResult(i, EDIT_SCORE);
-		*/
 		
 	}
 
@@ -98,20 +79,24 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		/*
-		if (resultCode == Activity.RESULT_OK && requestCode == EDIT_SCORE) {
+
+		if (resultCode == Activity.RESULT_OK && requestCode == GAME_EDIT_ACTIVITY_ID) {
 			//do stuff with the "hole" value...
 			Bundle bundle = data.getExtras();
 			
-			int index = bundle.getInt("index");
-			int hole = bundle.getInt("hole");
-			int newPar = bundle.getInt("par");
-			int newScore = bundle.getInt("score");
+			//retrieve the data structure from the bundle
+			ZeroIronGameStructure gameStructure = (ZeroIronGameStructure)bundle.getSerializable(GAME_STRUCTURE);
 			
-			//call an update to the DB adapter with the new data
-			mDbAdapter.updateScore(index, hole, newPar, newScore);
+			int score = gameStructure.getGameScore();
+			int ert=0;
+			ert++;
+			
+			mDbAdapter.writeGame(gameStructure);
+			
+			fillData();
+			
 		}
-		*/
+
 	}
 
 	@Override
@@ -127,17 +112,22 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch(item.getItemId()) {
         case NEW_ID:
-        	//TODO add activity for new game.
-        	//...
+
+    		//build intent for edit screen
+    		Intent i = new Intent(ZeroIronGamesList.this, ZeroIronGameEdit.class);
+    		
+    		//launch intent
+    		startActivityForResult(i, GAME_EDIT_ACTIVITY_ID);
+  
         	break;
-            case GEN_ID:
-            	generateGames();
-            	break;
-            case DEL_ID:
-            	mDbAdapter.deleteAllGames();
-            	mDbAdapter.dropGamesTable();
-            	mDbAdapter.createGamesTableIfRequired();
-            	break;
+        case GEN_ID:
+           	generateGames();
+           	break;
+        case DEL_ID:
+           	mDbAdapter.deleteAllGames();
+           	mDbAdapter.dropGamesTable();
+           	mDbAdapter.createGamesTableIfRequired();
+           	break;
         }
         
         fillData();

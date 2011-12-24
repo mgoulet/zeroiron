@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:stretchColumns="0">
+    <TableRow>
+	    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	        <TextView android:id="@+id/textCourseName"
+	        	android:layout_height="20pt"
+	        	android:layout_width="fill_parent"
+	        	android:textSize="8pt"
+	        	android:textStyle="bold"
+	        	android:text="Pineview Golf - Executive Course"
+	        	android:textAppearance="?android:attr/textAppearanceMedium"/>
+	        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+			    <LinearLayout
+			    	android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="80">
+				    	
+		        	<LinearLayout
+				    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+				        <TextView android:id="@+id/textLocationLabel"
+				        	android:layout_height="wrap_content"
+				        	android:textSize="6pt"
+				        	android:textStyle="bold"
+				        	android:text="Location"
+				        	android:textAppearance="?android:attr/textAppearanceMedium"
+				        	android:layout_width="100dp"/>
+				        <TextView android:id="@+id/textLocationValue"
+				        	android:layout_height="8pt"
+				        	android:layout_width="fill_parent"
+				        	android:layout_weight="80"
+				        	android:textSize="6pt"
+				        	android:text="Ottawa, ON"
+				        	android:textAppearance="?android:attr/textAppearanceMedium"/>	
+			        </LinearLayout>  
+		        	<LinearLayout
+				    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+				        <TextView android:id="@+id/textParLabel"
+				        	android:layout_height="wrap_content"
+				        	android:textSize="6pt"
+				        	android:textStyle="bold"
+				        	android:text="Par"
+				        	android:textAppearance="?android:attr/textAppearanceMedium"
+				        	android:layout_width="100dp"/>
+				        <TextView android:id="@+id/textParValue"
+				        	android:layout_height="8pt"
+				        	android:layout_width="fill_parent"
+				        	android:layout_weight="80"
+				        	android:textSize="6pt"
+				        	android:text="3"
+				        	android:textAppearance="?android:attr/textAppearanceMedium"/>	
+			        </LinearLayout> 	  
+			        <LinearLayout
+				    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+				        <TextView android:id="@+id/textSizeLabel"
+				        	android:layout_height="wrap_content"
+				        	android:textSize="6pt"
+				        	android:textStyle="bold"
+				        	android:text="Size"
+				        	android:textAppearance="?android:attr/textAppearanceMedium"
+				        	android:layout_width="100dp"/>
+				        <TextView android:id="@+id/textSizeValue"
+				        	android:layout_height="8pt"
+				        	android:layout_width="fill_parent"
+				        	android:layout_weight="80"
+				        	android:textSize="6pt"
+				        	android:text="18"
+				        	android:textAppearance="?android:attr/textAppearanceMedium"/>
+					</LinearLayout>
+				</LinearLayout>
+				
+				<ImageView android:id="@+id/imageNextArrow"
+					android:layout_width="wrap_content"
+					android:layout_weight="20"
+					android:src="@drawable/arrow_next48" android:layout_height="48dp"/> 
+						
+			</LinearLayout>
+
+	        <TextView android:id="@+id/textBuffer"
+	        	android:layout_height="10pt"
+	        	android:layout_width="fill_parent"
+	        	android:textSize="7pt"
+	        	android:textStyle="bold"
+	        	android:text=""
+	        	android:textAppearance="?android:attr/textAppearanceMedium"/>
+		</LinearLayout>
+        	        	      	
+	</TableRow>
+	
+</TableLayout>

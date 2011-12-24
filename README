@@ -1,1 +1,8 @@
-testing. again
+Outstanding bugs/issues:
+
+-Deleting Courses: must check for single quotes in string name.
+-Validate strings/data entered for data entry (non-null, etc...)
+-Remove Old popup (for games)
+-
+
+

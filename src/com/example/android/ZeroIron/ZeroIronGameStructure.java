@@ -1,8 +1,9 @@
 package com.example.android.ZeroIron;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ZeroIronGameStructure {
+public class ZeroIronGameStructure implements Serializable {
     
 	//members
 	private String mCourseName;

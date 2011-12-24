@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  	<LinearLayout
+  		xmlns:android="http://schemas.android.com/apk/res/android"
+  		android:orientation="horizontal"
+  		android:layout_width="match_parent"
+ 		android:layout_height="wrap_content">
+  		<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Create Game" android:textColor="#FFFFFF" android:id="@+id/TextView02"></TextView>
+    </LinearLayout>
+  	<EditText android:layout_height="wrap_content" android:inputType="text" android:layout_width="match_parent" android:id="@+id/courseName">
+  		<requestFocus></requestFocus>
+  	</EditText>
+  	<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Date / Time" android:textColor="#FFFFFF" android:id="@+id/textView_holeLabel"></TextView>
+  	<DatePicker android:layout_width="wrap_content" android:id="@+id/datePicker1" android:layout_height="wrap_content"></DatePicker>
+  	<TimePicker android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/timePicker1"></TimePicker>
+  	<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:textStyle="bold" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Forecast" android:textColor="#FFFFFF" android:id="@+id/TextView01"></TextView>
+  	<LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:orientation="horizontal"
+	  android:layout_width="match_parent" android:layout_height="wrap_content">
+  		<ImageButton android:src="@drawable/w_clear" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ImageClear"></ImageButton>
+  	<ImageButton android:src="@drawable/w_mixed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ImageMixed"></ImageButton>
+  	<ImageButton android:src="@drawable/w_cloudy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ImageCloudy"></ImageButton>
+  	<ImageButton android:src="@drawable/w_scattered" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ImageScattered"></ImageButton>
+  	<ImageButton android:src="@drawable/w_showers" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ImageShowers"></ImageButton>
+  	<ImageButton android:src="@drawable/w_storm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ImageStorm"></ImageButton>
+    </LinearLayout>
+    <RadioGroup android:id="@+id/radioGroup1"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+    </RadioGroup>
+	<TableLayout android:orientation="horizontal"
+		android:stretchColumns="0, 1"
+		android:layout_height="87dp"
+		android:layout_width="fill_parent">
+		<TableRow>
+			<ImageButton android:src="@drawable/b_ok" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageOk"></ImageButton>
+			<ImageButton android:src="@drawable/b_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageCancel"></ImageButton>
+		</TableRow>
+	</TableLayout>    
+    
+</LinearLayout>
