@@ -30,6 +30,8 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 	public static final int COURSE_SIZE_COLUMN = 4;
 	
 	public static final int COURSE_EDIT_ACTIVITY_ID = 0;
+	public static final int GAME_EDIT_ACTIVITY_ID = 1;
+	
 	public static final String COURSE_STRUCTURE = "COURSE_STRUCTURE";
 
 	@Override
@@ -75,6 +77,29 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
+		//1 - retrieve parameters from user selection
+		ListView listView = this.getListView();
+		Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+		
+		String courseName = cursor.getString(COURSE_NAME_COLUMN);
+		String courseLocation = cursor.getString(COURSE_LOCATION_COLUMN);
+		int coursePar = cursor.getInt(COURSE_PAR_COLUMN);
+		int courseSize = cursor.getInt(COURSE_SIZE_COLUMN);
+
+		//2 - build structure
+		ZeroIronCourseStructure course =
+				new ZeroIronCourseStructure(courseName, courseLocation, coursePar, courseSize); 
+		
+		//3 - retrieve courseId from database
+		int courseId = mDbAdapter.fetchCourseId(courseName);
+
+		//4 - send to edit activity via intent
+		//ZeroIronGamesList gameList = R.id.
+		Intent i = new Intent(ZeroIronCourseList.this, ZeroIronGameEdit.class);
+		i.putExtra(COURSE_STRUCTURE, course);
+		i.putExtra(ZeroIronDbAdapter.KEY_COURSE_ID, courseId);
+		startActivityForResult(i, GAME_EDIT_ACTIVITY_ID);
+		
 	}
 
 	@Override
@@ -100,6 +125,18 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 						
 			fillData();
 			
+		} else if (resultCode == Activity.RESULT_OK && requestCode == GAME_EDIT_ACTIVITY_ID) {
+			
+			//retrieve game from intent
+			Bundle bundle = data.getExtras();
+			ZeroIronGameStructure game = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronGamesList.GAME_STRUCTURE);
+			
+			//store in DB
+			mDbAdapter.writeGame(game);
+			
+			//2 - move to the games list...not sure how to do this
+			int ert=0;
+			ert++;
 		}
 
 	}

@@ -2,46 +2,72 @@ package com.example.android.ZeroIron;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class ZeroIronGameStructure implements Serializable {
     
 	//members
-	private String mCourseName;
-	private Date mDate;
-	private int mGameScore;
+	private int mCourseId;
+	private String mName;
+	private GregorianCalendar mDate;
+	private String mNotes;
+	private int mStatus;
 	
 	//constructor
 	public ZeroIronGameStructure() {
-		
-		mCourseName = new String("");
-		mDate = new Date();
-		mGameScore = 0;
-	}
-    
-	//getters
-	public String getCourseName() {
-		return mCourseName;
+		mCourseId = 0;
+		mName = new String();
+		mDate = new GregorianCalendar();
+		mNotes = new String();
+		mStatus = 0;
 	}
 	
-	public Date getDate() {
+	public ZeroIronGameStructure(int courseId, String name, GregorianCalendar date, String notes, int status) {
+		mCourseId = courseId;
+		mName = name;
+		mDate = date;		
+		mNotes = notes;
+		mStatus = status;
+	}
+    
+	public int getCourseId() {
+		return mCourseId;
+	}
+	
+	public String getName() {
+		return mName;
+	}
+	
+	public GregorianCalendar getDate() {
 		return mDate;
 	}
-    
-	public int getGameScore() {
-		return mGameScore;
+
+	public String getNotes() {
+		return mNotes;
 	}
 	
-	//setters
-	public void setCourseName(String newDate) {
-		mCourseName = newDate;
+	public int getStatus() {
+		return mStatus;
 	}
 	
-	public void setDate(Date date) {
+	public void setCourseId(int courseId) {
+		mCourseId = courseId;
+	}
+	
+	public void setName(String name) {
+		mName = name;
+	}
+	
+	public void setDate(GregorianCalendar date) {
 		mDate = date;
 	}
 	
-	public void setGameScore(int score) {
-		mGameScore = score;
+	public void setNotes(String notes) {
+		mNotes = notes;
+	}
+	
+	public void setStatus(int status) {
+		mStatus = status;
 	}
 	
 }

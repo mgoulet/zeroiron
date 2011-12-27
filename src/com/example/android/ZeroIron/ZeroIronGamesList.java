@@ -50,14 +50,14 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         Cursor c = mDbAdapter.fetchAllGames();
         startManagingCursor(c);
 
-        String[] from = new String[] {  ZeroIronDbAdapter.KEY_GAME_COURSE_NAME,
+        String[] from = new String[] {  ZeroIronDbAdapter.KEY_GAME_COURSE_ID,
         								ZeroIronDbAdapter.KEY_GAME_DATE,
-        								ZeroIronDbAdapter.KEY_GAME_SCORE/*,
-        								ZeroIronDbAdapter.KEY_GAME_WEATHER*/};
-        int[] to = new int[] { R.id.textCourseName,
+        								ZeroIronDbAdapter.KEY_GAME_NOTES,
+        								ZeroIronDbAdapter.KEY_GAME_STATUS};
+        int[] to = new int[] { R.id.textCourseId,
         					   R.id.textGameDate,
-        					   R.id.textGameScore/*,
-        					   R.id.textGameWeather*/};
+        					   R.id.textGameNotes,
+        					   R.id.textGameStatus};
       
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter cursor =
@@ -70,8 +70,6 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
     @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-
-
 		
 	}
 
@@ -86,10 +84,6 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 			
 			//retrieve the data structure from the bundle
 			ZeroIronGameStructure gameStructure = (ZeroIronGameStructure)bundle.getSerializable(GAME_STRUCTURE);
-			
-			int score = gameStructure.getGameScore();
-			int ert=0;
-			ert++;
 			
 			mDbAdapter.writeGame(gameStructure);
 			
@@ -140,8 +134,7 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
     	for (int i=0; i<3; i++) {
     		//create game structure and send over to the dbAdapter.
     		ZeroIronGameStructure game = new ZeroIronGameStructure();
-    		game.setCourseName("DEMO COURSE");
-    		game.setGameScore(100);
+    		game.setCourseId(0);
     		
     		boolean result = mDbAdapter.writeGame(game);
     		
@@ -193,6 +186,11 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	}
 	
 	public void editGameButtonClicked(int rowId) {
+		
+		//1 -  
+		
+		
+		
 		int ert=0;
 		ert++;
 	}

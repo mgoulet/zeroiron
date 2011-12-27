@@ -47,10 +47,11 @@ public class ZeroIronDbAdapter {
 	public static final String KEY_COURSE_SIZE = "size";		
 	
 	public static final String KEY_GAME_ID = "_id";
-	public static final String KEY_GAME_COURSE_NAME = "course";
+	public static final String KEY_GAME_COURSE_ID = "course_id";
+	public static final String KEY_GAME_NAME = "name";
 	public static final String KEY_GAME_DATE = "date";
-	public static final String KEY_GAME_SCORE = "score";
-	public static final String KEY_GAME_WEATHER = "weather";
+	public static final String KEY_GAME_NOTES = "notes";
+	public static final String KEY_GAME_STATUS = "status";
 
 	public static final String KEY_ROWID = "_id";
     public static final String KEY_HOLE = "hole";
@@ -74,7 +75,8 @@ public class ZeroIronDbAdapter {
                 
     private static final String DATABASE_CREATE_GAMES =
             "create table if not exists games (_id integer primary key autoincrement, "
-            + KEY_GAME_COURSE_NAME + " text not null, " + KEY_GAME_DATE + " text not null, " + KEY_GAME_SCORE + " integer, " + KEY_GAME_WEATHER + " integer);";
+            + KEY_GAME_COURSE_ID + " integer not null, " + KEY_GAME_NAME + " text not null, " + KEY_GAME_DATE + " text not null, "
+            + KEY_GAME_NOTES + " text not null, " + KEY_GAME_STATUS + " integer not null" + ");";
             
     private static final String DATABASE_CREATE_SCORES =
         "create table if not exists scores (_id integer primary key autoincrement, "
@@ -165,6 +167,23 @@ public class ZeroIronDbAdapter {
 
     }
     
+    public int fetchCourseId(String courseName) {
+    	
+    	try {
+    		Cursor cursor = mDb.query(DATABASE_COURSES,  new String[] {KEY_ROWID}, KEY_COURSE_NAME + "= '" + courseName + "'", null, null, null, null, null);
+            if (cursor != null) {
+            	cursor.moveToFirst();
+            	return cursor.getInt(0);
+
+            }
+    	} catch (Exception e ) {
+    		Toast.makeText(this.mCtx, "Error fetching course with name: " + courseName + ".", Toast.LENGTH_SHORT).show();
+    	}
+    	
+    	return -1;
+    	
+    }
+    
     public boolean writeCourse(ZeroIronCourseStructure oldCourseStructure, ZeroIronCourseStructure newCourseStructure) { 
     	
     	if (oldCourseStructure == null) {
@@ -239,6 +258,81 @@ public class ZeroIronDbAdapter {
     }    
     
 //////////////////////////////////////////////////////////////////////
+
+    public boolean createGamesTableIfRequired() {
+    	
+    	//test to see if table is actually deleted.
+    	Cursor x;
+    	try {
+    		x = mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
+	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, null, null, null, null, null);
+    	} catch (Exception e) {
+    		int ert=0;
+    		ert++;
+    	}
+    	
+    	try {
+    		mDb.execSQL(DATABASE_CREATE_GAMES);
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error creating games table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}    	
+    	return true;
+    }
+    
+    public Cursor fetchAllGames() { 
+    	try {
+	        return mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
+	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, null, null, null, null, null);
+    	} catch (Exception e ) {
+    		Toast.makeText(this.mCtx, "Error fetching all games.", Toast.LENGTH_SHORT).show();
+    		return null;
+    	}
+
+    }
+    
+    public boolean writeGame(ZeroIronGameStructure game) {    	
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_GAME_COURSE_ID, game.getCourseId());
+        initialValues.put(KEY_GAME_NAME, game.getName().toString());
+        initialValues.put(KEY_GAME_DATE, game.getDate().toString());
+        initialValues.put(KEY_GAME_NOTES, game.getNotes());
+        initialValues.put(KEY_GAME_STATUS, game.getStatus());
+
+        return mDb.insert(DATABASE_GAMES, null, initialValues) > 0;
+
+    }
+    
+    public boolean deleteAllGames() {
+    	
+    	try {
+    		mDb.delete(DATABASE_GAMES, null, null);
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error deleting games table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	return true;
+    }
+   
+    public boolean deleteGame(ZeroIronGameStructure game) {
+    	
+    	return false;
+    }
+    
+    public boolean dropGamesTable() {
+    	try {
+    		mDb.execSQL("drop table games");
+    	} catch (Exception e) {
+    		Toast.makeText(this.mCtx, "Error dropping games table.", Toast.LENGTH_SHORT).show();
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+////////////////////////////////////////////////////////////////////////
+     
     
     public long createScore(int hole, int par, int score) {
         ContentValues initialValues = new ContentValues();
@@ -378,77 +472,7 @@ public class ZeroIronDbAdapter {
     }
 
 /////////////////////////////////////////////
-    
-    public boolean createGamesTableIfRequired() {
-    	
-    	//test to see if table is actually deleted.
-    	Cursor x;
-    	try {
-    		x = mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_NAME,
-	        		KEY_GAME_DATE, KEY_GAME_SCORE, KEY_GAME_WEATHER}, null, null, null, null, null);
-    	} catch (Exception e) {
-    		int ert=0;
-    		ert++;
-    	}
-    	
-    	try {
-    		mDb.execSQL(DATABASE_CREATE_GAMES);
-    	} catch (Exception e) {
-    		Toast.makeText(this.mCtx, "Error creating games table.", Toast.LENGTH_SHORT).show();
-    		return false;
-    	}    	
-    	return true;
-    }
-    
-    public Cursor fetchAllGames() { 
-    	try {
-	        return mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_NAME,
-	        		KEY_GAME_DATE, KEY_GAME_SCORE, KEY_GAME_WEATHER}, null, null, null, null, null);
-    	} catch (Exception e ) {
-    		Toast.makeText(this.mCtx, "Error fetching all games.", Toast.LENGTH_SHORT).show();
-    		return null;
-    	}
 
-    }
-    
-    public boolean writeGame(ZeroIronGameStructure game) {    	
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_GAME_COURSE_NAME, game.getCourseName());
-        initialValues.put(KEY_GAME_DATE, game.getDate().toString());
-        initialValues.put(KEY_GAME_SCORE, game.getGameScore());
-        initialValues.put(KEY_GAME_WEATHER, 0);
-
-        return mDb.insert(DATABASE_GAMES, null, initialValues) > 0;
-
-    }
-    
-    public boolean deleteAllGames() {
-    	
-    	try {
-    		mDb.delete(DATABASE_GAMES, null, null);
-    	} catch (Exception e) {
-    		Toast.makeText(this.mCtx, "Error deleting games table.", Toast.LENGTH_SHORT).show();
-    		return false;
-    	}
-    	
-    	return true;
-    }
-   
-    public boolean deleteGame(ZeroIronGameStructure game) {
-    	
-    	return false;
-    }
-    
-    public boolean dropGamesTable() {
-    	try {
-    		mDb.execSQL("drop table games");
-    	} catch (Exception e) {
-    		Toast.makeText(this.mCtx, "Error dropping games table.", Toast.LENGTH_SHORT).show();
-    		return false;
-    	}
-    	
-    	return true;
-    }
     
 }
 
