@@ -222,17 +222,15 @@ public class ZeroIronEditDeletePopup implements OnClickListener {
 		ImageButton b = (ImageButton) arg0;
 		
 		if (b.getId() == R.id.editButton) {
-			Toast.makeText(this.anchor.getContext(), "Course Edited!", Toast.LENGTH_SHORT).show();
 			this.dismiss();
 			EditDeletePopupInvoker sourceView = (EditDeletePopupInvoker)arg0.getContext();
-			sourceView.editGameButtonClicked(rowId);
+			sourceView.editButtonClicked(rowId);
 			return;
 		}
 		if (b.getId() == R.id.deleteButton) {
-			Toast.makeText(this.anchor.getContext(), "Course Deleted!", Toast.LENGTH_SHORT).show();
 			this.dismiss();
 			EditDeletePopupInvoker sourceView = (EditDeletePopupInvoker)arg0.getContext();
-			sourceView.deleteGameButtonClicked(rowId);
+			sourceView.deleteButtonClicked(rowId);
 			return;
 		}
 	}

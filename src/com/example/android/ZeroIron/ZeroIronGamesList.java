@@ -1,5 +1,7 @@
 package com.example.android.ZeroIron;
 
+import java.text.SimpleDateFormat;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -13,19 +15,39 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter.ViewBinder;
+import android.widget.TextView;
 
-public class ZeroIronGamesList extends ListActivity implements OnItemLongClickListener {
+public class ZeroIronGamesList extends ListActivity implements OnItemLongClickListener, EditDeletePopupInvoker {
 
-	private ZeroIronDbAdapter mDbAdapter;
+	//to be refactored
+	public static ZeroIronDbAdapter mDbAdapter;
+	
 	public static final int NEW_ID = Menu.FIRST;
 	public static final int GEN_ID = Menu.FIRST+1;
 	public static final int DEL_ID = Menu.FIRST+2;
 	
+	public static final int GAME_ID_COLUMN 			= 0;
+	public static final int GAME_COURSE_ID_COLUMN 	= 1;
+	public static final int GAME_NAME_COLUMN 		= 2;
+	public static final int GAME_DATE_COLUMN 		= 3;
+	public static final int GAME_NOTES_COLUMN 		= 4;
+	public static final int GAME_STATUS_COLUMN 		= 5;
+	
+	
+	String[] from = new String[] {  ZeroIronDbAdapter.KEY_GAME_COURSE_ID,
+			ZeroIronDbAdapter.KEY_GAME_NAME,        								
+			ZeroIronDbAdapter.KEY_GAME_DATE,
+			ZeroIronDbAdapter.KEY_GAME_NOTES,
+			ZeroIronDbAdapter.KEY_GAME_STATUS};
+	
+	
 	public static final int GAME_EDIT_ACTIVITY_ID = 0;
-	public static final String GAME_STRUCTURE = "GAME_STRUCTURE";
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +73,79 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         startManagingCursor(c);
 
         String[] from = new String[] {  ZeroIronDbAdapter.KEY_GAME_COURSE_ID,
+        								ZeroIronDbAdapter.KEY_GAME_NAME,        								
         								ZeroIronDbAdapter.KEY_GAME_DATE,
         								ZeroIronDbAdapter.KEY_GAME_NOTES,
         								ZeroIronDbAdapter.KEY_GAME_STATUS};
-        int[] to = new int[] { R.id.textCourseId,
+        
+        int[] to = new int[] { R.id.textCourseName,
+        					   R.id.textGameName,
         					   R.id.textGameDate,
         					   R.id.textGameNotes,
-        					   R.id.textGameStatus};
+        					   R.id.imageStatus};
       
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter cursor =
             new SimpleCursorAdapter(this, R.layout.zeroiron_gameslist_item, c, from, to);
         
+        cursor.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+        	@Override
+        	public boolean setViewValue(View view, Cursor cursor, int colIndex) {
+        		
+        		String colName = cursor.getColumnName(colIndex);
+        		
+        		int ert=0;
+        		ert++;
+        		
+        		if (colName.equals(ZeroIronDbAdapter.KEY_GAME_NAME)) {
+        			
+        			TextView nameText = (TextView) view;
+        			nameText.setText(cursor.getString(colIndex));
+        			
+        		} else if (colName.equals(ZeroIronDbAdapter.KEY_GAME_COURSE_ID)) {
+        			
+        			//first, retrieve the course name from it's ID currently stored in the cursor.
+        			String courseName = ZeroIronGamesList.mDbAdapter.fetchCourseNameFromId(cursor.getInt(colIndex));
+        			
+        			//shove that shit in there, muffu'gah
+        			TextView textView = (TextView) view;
+        			textView.setText(courseName);
+        			
+        		} else if (colName.equals(ZeroIronDbAdapter.KEY_GAME_DATE)) {
+        			
+        			TextView dateText = (TextView) view;
+        			dateText.setText(cursor.getString(colIndex));
+        			
+        		} else if (colName.equals(ZeroIronDbAdapter.KEY_GAME_NOTES)) {
+        			
+        			TextView notesText = (TextView) view;
+        			notesText.setText(cursor.getString(colIndex));
+        			
+        		} else if (colName.equals(ZeroIronDbAdapter.KEY_GAME_STATUS)) {
+        			
+        			//1 - retrieve value
+        			int status = cursor.getInt(colIndex);
+        			
+        			//2 - get a handle on the imageView from the xml layout
+        			ImageView imageView = (ImageView) findViewById(R.id.imageStatus);
+        			
+        			
+        			//3 - shove value in the view handle...
+        			if (status == 0) {
+        				
+        			} else {
+        				
+        			}
+        				        			
+        			int ertert=0;
+        			ertert++;	
+        			
+        		}
+        		
+        		return true;
+        	}
+        });
+
         setListAdapter(cursor);
        
     }
@@ -83,9 +166,15 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 			Bundle bundle = data.getExtras();
 			
 			//retrieve the data structure from the bundle
-			ZeroIronGameStructure gameStructure = (ZeroIronGameStructure)bundle.getSerializable(GAME_STRUCTURE);
+			ZeroIronGameStructure newGameStructure = (ZeroIronGameStructure)bundle.getSerializable(ZeroIronGameEdit.NEW_RECORD);
+			ZeroIronGameStructure oldGameStructure = null;
 			
-			mDbAdapter.writeGame(gameStructure);
+			//retrieve old values if applicable
+			if (bundle.containsKey(ZeroIronCourseEdit.OLD_RECORD)) {
+				oldGameStructure = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronGameEdit.OLD_RECORD);
+			}
+			
+			mDbAdapter.writeGame(oldGameStructure, newGameStructure);
 			
 			fillData();
 			
@@ -129,14 +218,15 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         return super.onMenuItemSelected(featureId, item);
     }
     
+    //This method to be updated drastically to reinforce integrity with courses table.
     private void generateGames() {
     	//build scores    	
     	for (int i=0; i<3; i++) {
     		//create game structure and send over to the dbAdapter.
-    		ZeroIronGameStructure game = new ZeroIronGameStructure();
-    		game.setCourseId(0);
+    		ZeroIronGameStructure newGame = new ZeroIronGameStructure();
+    		newGame.setCourseId(0);
     		
-    		boolean result = mDbAdapter.writeGame(game);
+    		boolean result = mDbAdapter.writeGame(null, newGame);
     		
     		int ert=0;
     		ert++;
@@ -179,25 +269,49 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
 
-		ZeroIronCustomGamePopupWindow popup = new ZeroIronCustomGamePopupWindow(arg1, arg2); 
+		ZeroIronEditDeletePopup popup = new ZeroIronEditDeletePopup(arg1, arg2); 
 		popup.showLikeQuickAction();
 
 		return true;
 	}
 	
-	public void editGameButtonClicked(int rowId) {
+	public void editButtonClicked(int rowId) {
+
+		//1 - retrieve game name from user selection
+		ListView listView = this.getListView();
+		Cursor cursor = (Cursor) listView.getItemAtPosition(rowId); 
+		String gameName = cursor.getString(GAME_NAME_COLUMN);
 		
-		//1 -  
+		//2 - fetch game name's GameStructure from DB
+		Cursor gameCursor = mDbAdapter.fetchGameFromName(gameName);
+		ZeroIronGameStructure game = new ZeroIronGameStructure(
+				gameCursor.getInt(GAME_COURSE_ID_COLUMN),
+				gameCursor.getString(GAME_NAME_COLUMN),
+				gameCursor.getString(GAME_DATE_COLUMN),
+				gameCursor.getString(GAME_NOTES_COLUMN),
+				gameCursor.getInt(GAME_STATUS_COLUMN));
 		
-		
-		
-		int ert=0;
-		ert++;
+		//3 - fetch course name from GameStructure's CourseId
+		String courseName = mDbAdapter.fetchCourseNameFromId(game.getCourseId());
+				
+		//4 - send to edit activity via intent		
+		Intent i = new Intent(ZeroIronGamesList.this, ZeroIronGameEdit.class);
+		i.putExtra(ZeroIronGameStructure.GAME_STRUCTURE, game);
+		i.putExtra(ZeroIronDbAdapter.KEY_COURSE_NAME, courseName);
+		startActivityForResult(i, GAME_EDIT_ACTIVITY_ID);
+
 	}
 	
-	public void deleteGameButtonClicked(int rowId) {
-		int ert=0;
-		ert++;
+	public void deleteButtonClicked(int rowId) {
+		//get a handle on the name of the course at location 'rowId'
+		ListView listView = this.getListView();
+		Cursor cursor = (Cursor) listView.getItemAtPosition(rowId); 
+		String gameName = cursor.getString(GAME_NAME_COLUMN);
+		
+		//send it off for deletion from the database
+		
+		mDbAdapter.deleteGame(gameName);
+		fillData();
 	}
 	
 }

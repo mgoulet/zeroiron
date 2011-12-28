@@ -1,11 +1,16 @@
 package com.example.android.ZeroIron;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class ZeroIronGameStructure implements Serializable {
     
+	public static final String GAME_STRUCTURE = "GAME_STRUCTURE";
+	
 	//members
 	private int mCourseId;
 	private String mName;
@@ -30,6 +35,41 @@ public class ZeroIronGameStructure implements Serializable {
 		mStatus = status;
 	}
     
+	public ZeroIronGameStructure(int courseId, String name, String date, String notes, int status) {
+		mCourseId = courseId;
+		mName = name;
+		mNotes = notes;
+		mStatus = status;
+		
+		//convert date from string
+		SimpleDateFormat sdf = new SimpleDateFormat(ZeroIronDbAdapter.DATE_FORMAT);
+		Date dateObject;
+		
+		try {
+			
+			dateObject = sdf.parse(date);
+			mDate = new GregorianCalendar();			
+			mDate.setTime(dateObject);
+			
+			//test
+			/*
+			int year = mDate.get(Calendar.YEAR);
+			int month = mDate.get(Calendar.MONTH);
+			int day = mDate.get(Calendar.DAY_OF_MONTH);
+			int hour = mDate.get(Calendar.HOUR);
+			int minutes = mDate.get(Calendar.MINUTE);
+						
+			int ert=0;
+			ert++;
+			*/
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public int getCourseId() {
 		return mCourseId;
 	}

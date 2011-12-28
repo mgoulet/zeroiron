@@ -7,57 +7,53 @@
 	    <LinearLayout
 	    	android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
 	     	android:layout_weight="80">
-	        <TextView android:id="@+id/textCourseId"
-	        	android:layout_height="wrap_content"
-	        	android:layout_width="fill_parent"
-	        	android:textSize="7pt"
-	        	android:textStyle="bold"
-	        	android:text="COURSE ID/NAME"
-	        	android:textAppearance="?android:attr/textAppearanceMedium"/>
 	        <LinearLayout
 	    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
 	     	android:layout_weight="80">		
 		        <LinearLayout
 		    	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
 		     	android:layout_weight="80">		
+		     		<TextView android:id="@+id/textGameName"
+			        	android:layout_height="wrap_content"
+			        	android:layout_width="fill_parent"
+			        	android:textSize="7pt"
+			        	android:textStyle="bold"
+			        	android:text="-----------"
+			        	android:textAppearance="?android:attr/textAppearanceMedium"/>
+			        <TextView android:id="@+id/textCourseName"
+			        	android:layout_height="wrap_content"
+			        	android:layout_width="fill_parent"
+			        	android:textSize="7pt"
+			        	android:text="-----------"
+			        	android:textAppearance="?android:attr/textAppearanceMedium"/>
 			        <TextView android:id="@+id/textGameDate"
 			        	android:layout_height="wrap_content"
 			        	android:layout_width="fill_parent"
 			        	android:textSize="6pt"
-			        	android:text="GAMEDATE"
+			        	android:text="-----------"
 			        	android:textAppearance="?android:attr/textAppearanceMedium"/>
-			       	<LinearLayout
-			    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-			     	android:layout_weight="80">	
-				       	<TextView android:id="@+id/textGameNotesLabel"
-				        	android:layout_height="20pt"
-				        	android:layout_width="20pt"
-				        	android:textSize="6pt"
-				        	android:text="NOTES: "
-				        	android:textAppearance="?android:attr/textAppearanceMedium"/>		
-				        <TextView android:id="@+id/textGameNotes"
-				        	android:layout_height="20pt"
-				        	android:layout_width="fill_parent"
-				        	android:textSize="6pt"
-				        	android:text="Blablabla."
-				        	android:textAppearance="?android:attr/textAppearanceMedium"/>		
-			        </LinearLayout> 
 			    </LinearLayout>    
-			    	<LinearLayout
-		    		android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-		     		android:layout_weight="80">		
-			        	<ImageView android:id="@+id/imageStatus"
-							android:layout_width="wrap_content"
-							android:layout_weight="20"
-							android:src="@drawable/arrow_next48" android:layout_height="48dp"/>
-						<TextView android:id="@+id/textGameStatus"
-				        	android:layout_height="20pt"
-				        	android:layout_width="fill_parent"
-				        	android:textSize="6pt"
-				        	android:text="In Progress."
-				        	android:textAppearance="?android:attr/textAppearanceMedium"/>		
-					</LinearLayout> 
-		        </LinearLayout>
+		        	<ImageView android:id="@+id/imageStatus"
+						android:layout_width="48dp"
+						android:layout_weight="20"
+						android:src="@drawable/game_complete" android:layout_height="48dp"/>
+			</LinearLayout>
+	       	<LinearLayout
+	    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="20pt"
+	     	android:layout_weight="80">	
+		       	<TextView android:id="@+id/textGameNotesLabel"
+		        	android:layout_height="fill_parent"
+		        	android:layout_width="20pt"
+		        	android:textSize="6pt"
+		        	android:text="NOTES: "
+		        	android:textAppearance="?android:attr/textAppearanceMedium"/>		
+		        <TextView android:id="@+id/textGameNotes"
+		        	android:layout_height="fill_parent"
+		        	android:layout_width="fill_parent"
+		        	android:textSize="6pt"
+		        	android:text="-----------"
+		        	android:textAppearance="?android:attr/textAppearanceMedium"/>		
+	        </LinearLayout> 
 		</LinearLayout> 
 	</TableRow>
 </TableLayout>

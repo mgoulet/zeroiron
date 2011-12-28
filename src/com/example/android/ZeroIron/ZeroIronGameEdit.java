@@ -1,10 +1,7 @@
 package com.example.android.ZeroIron;
 
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import com.example.android.ZeroIron.R.id;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -13,27 +10,30 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDateSetListener, OnTimeSetListener {
 
-	int mCurrentWeatherSelection;
+	public static final String OLD_RECORD = "oldrecord";
+	public static final String NEW_RECORD = "newrecord";
 	
-	ZeroIronCourseStructure mCourseStructure;
-	int mCourseId;
+	//for use when a new game is created from a course name and id.
+	protected int mCourseId;
+	
+	//for use when a game is being edited and an existing record is sent through
+	protected ZeroIronGameStructure mOldGameStructure;
+
+	//variable used in either cases above
+	protected String mCourseName;
 	
 	public static final int DATE_DIALOG_ID = 0;
 	public static final int TIME_DIALOG_ID = 1;
@@ -53,42 +53,73 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		setContentView(R.layout.zeroiron_editgame);
 
 		//set members to zero or null
-		mCourseStructure = null;
+		mCourseName = null;
 		mCourseId = 0;
 		
+		mOldGameStructure = null;
+		
 		mActiveCalendar = new GregorianCalendar();
-				
-		//update fields accordingly
-		updateFieldsFromIntent();
+			
+		//different behaviour if a new game is created or an existing one is edited
+		prepareFromIntent();
 		
 		//set button listeners
 		setButtonListeners();		
 		
 	}
 	
-	protected boolean updateFieldsFromIntent() {
-
-		//retrieve intent
+	protected boolean prepareFromIntent() {
+		
 		Bundle bundle = getIntent().getExtras();
+		
+		if ( bundle != null && bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME) &&
+				   bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_ID) ) {
 
-		if ( bundle != null && bundle.containsKey(ZeroIronCourseList.COURSE_STRUCTURE) &&
-							   bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_ID) ) {
-					
-			mCourseStructure = (ZeroIronCourseStructure) bundle.getSerializable(ZeroIronCourseList.COURSE_STRUCTURE);
+			mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
 			mCourseId = bundle.getInt(ZeroIronDbAdapter.KEY_COURSE_ID);
-					
-			//populate widgets
-			populateCourseWidgets(mCourseStructure.getCourseName(),
-							mCourseStructure.getCourseLocation(),
-							mCourseStructure.getCoursePar(),
-							mCourseStructure.getCourseSize());
 			
-		} else if (bundle != null && bundle.containsKey(ZeroIronGamesList.GAME_STRUCTURE)) {
+			this.onDateSet(null,
+					mActiveCalendar.get(Calendar.YEAR),
+					mActiveCalendar.get(Calendar.MONTH),
+					mActiveCalendar.get(Calendar.DAY_OF_MONTH));
 			
-			//we are editing an existing game.
-			//...
+			this.onTimeSet(null,
+					mActiveCalendar.get(Calendar.HOUR),
+					mActiveCalendar.get(Calendar.MINUTE));
 			
+		} else if ( bundle != null && bundle.containsKey(ZeroIronGameStructure.GAME_STRUCTURE) &&
+				bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME)) {
+			
+			mOldGameStructure = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronGameStructure.GAME_STRUCTURE);
+			mCourseId = mOldGameStructure.getCourseId();
+			
+			//populate fields using game structure
+			
+			EditText gameNameText = (EditText) findViewById(R.id.editGameName);
+			gameNameText.setText(mOldGameStructure.getName());
+			
+			this.onDateSet(null,
+					mOldGameStructure.getDate().get(Calendar.YEAR),
+					mOldGameStructure.getDate().get(Calendar.MONTH),
+					mOldGameStructure.getDate().get(Calendar.DAY_OF_MONTH));
+			
+			this.onTimeSet(null,
+					mOldGameStructure.getDate().get(Calendar.HOUR),
+					mOldGameStructure.getDate().get(Calendar.MINUTE));
+			
+			EditText gameNotesText = (EditText) findViewById(R.id.editGameNotes);
+			gameNotesText.setText(mOldGameStructure.getNotes());
+						
+		} else {
+			Toast.makeText(this, "ERR: Intent contents corrupt", Toast.LENGTH_SHORT).show();
+			return false;
 		}
+		
+		//Retrieve course name
+		mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
+		
+		TextView textNameView = (TextView) findViewById(R.id.textCourseNameValue);
+		textNameView.setText(mCourseName);
 		
 		return true;
 	}
@@ -140,19 +171,6 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		
 		return false;
 	}
-	
-	private boolean populateCourseWidgets(String courseName, String courseLocation, int coursePar, int courseSize) {
-		
-		//Retrieve course name
-		TextView textNameView = (TextView) findViewById(R.id.textCourseNameValue);
-		textNameView.setText(courseName);
-		
-		//other fields not displayed for the moment
-		//...
-		
-		return true;
-		
-	}
 
 	@Override
 	public void onClick(View view) {
@@ -160,20 +178,26 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		if (view == mOkButton) {
 			
 			//1 - retrieve content from widgets
+			TextView nameText = (TextView) findViewById(R.id.editGameName);
+			TextView notesText = (TextView) findViewById(R.id.editGameNotes);
 			
 			//2 - store in structure
-			ZeroIronGameStructure gameStructure = new ZeroIronGameStructure();
-			gameStructure.setCourseId(mCourseId);
-			TextView nameText = (TextView) findViewById(R.id.editGameName);
-			gameStructure.setName(nameText.getText().toString());
-			gameStructure.setStatus(0); //Initial status is 0.
-			gameStructure.setDate(mActiveCalendar);
-			TextView notesText = (TextView) findViewById(R.id.editGameNotes);
-			gameStructure.setNotes(notesText.getText().toString());
+			ZeroIronGameStructure newGameStructure = new ZeroIronGameStructure();
+			
+			newGameStructure.setCourseId(mCourseId);			
+			newGameStructure.setName(nameText.getText().toString());
+			newGameStructure.setDate(mActiveCalendar);
+			newGameStructure.setNotes(notesText.getText().toString());
+			newGameStructure.setStatus(0);
 						
 			//3 - return to invoking activity
 			Intent i = new Intent(ZeroIronGameEdit.this, ZeroIronGamesList.class);
-			i.putExtra(ZeroIronGamesList.GAME_STRUCTURE, gameStructure);
+			i.putExtra(NEW_RECORD, newGameStructure);
+			
+			//4 - If old game structure is not null, add it in the intent.
+			if (mOldGameStructure != null) {
+				i.putExtra(OLD_RECORD, mOldGameStructure);				
+			}
 			
 			setResult(RESULT_OK, i);
 			finish();

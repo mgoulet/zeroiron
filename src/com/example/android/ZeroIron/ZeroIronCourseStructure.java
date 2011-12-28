@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class ZeroIronCourseStructure implements Serializable {
 
+	public static final String COURSE_STRUCTURE = "COURSE_STRUCTURE";
+	
 	private String mCourseName;
 	private String mCourseLocation;
 	private int mCoursePar;

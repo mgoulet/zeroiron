@@ -1,10 +1,15 @@
-Outstanding bugs/issues:
+OUTSTANDING LIST OF ISSUES:
 
 -Deleting Courses: must check for single quotes in string name.
 -Validate strings/data entered for data entry (non-null, etc...)
--Remove Old popup (for games)
--move COURSE_STRUCTURE into Db object.
--refactor ZeroIronCourseEdit like ZeroIronGameEdit
+-refactor ZeroIronCourseEdit like ZeroIronGameEdit (onClickListeners and stuff)
+-refactor dbAdapter as singleton
+-change KEY_ROWID with proper ids from the defined constants...
+-cleanup constants for db tables access - should all reside in DbAdapter, not in activities classes.
+	-move COURSE_STRUCTURE into Db object.
+-Fix time AM/PM display bug when:
+	-creating a new game record
+	-loading an existing game record
 
 
 

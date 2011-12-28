@@ -2,8 +2,8 @@ package com.example.android.ZeroIron;
 
 public interface EditDeletePopupInvoker {
 
-	abstract public void editGameButtonClicked(int rowId);
+	abstract public void editButtonClicked(int rowId);
 	
-	abstract public void deleteGameButtonClicked(int rowId);
+	abstract public void deleteButtonClicked(int rowId);
 	
 }

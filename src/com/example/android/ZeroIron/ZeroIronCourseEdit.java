@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 public class ZeroIronCourseEdit extends Activity {
 
-	public static final String POPUP_IS_EDITING_EXISTING_RECORD = "iseditingexistingrecord";
 	public static final String OLD_RECORD = "oldrecord";
 	public static final String NEW_RECORD = "newrecord";
 	
@@ -93,7 +92,6 @@ public class ZeroIronCourseEdit extends Activity {
 				
 				//add old structure if required
 				if (mOldCourseStructure != null) {
-					i.putExtra(POPUP_IS_EDITING_EXISTING_RECORD, true);
 					i.putExtra(OLD_RECORD, mOldCourseStructure);
 				}
 				
