@@ -12,11 +12,11 @@ public class ZeroIronGameStructure implements Serializable {
 	public static final String GAME_STRUCTURE = "GAME_STRUCTURE";
 	
 	//members
-	private int mCourseId;
-	private String mName;
-	private GregorianCalendar mDate;
-	private String mNotes;
-	private int mStatus;
+	protected int mCourseId;
+	protected String mName;
+	protected GregorianCalendar mDate;
+	protected String mNotes;
+	protected int mStatus;
 	
 	//constructor
 	public ZeroIronGameStructure() {
@@ -51,20 +51,7 @@ public class ZeroIronGameStructure implements Serializable {
 			mDate = new GregorianCalendar();			
 			mDate.setTime(dateObject);
 			
-			//test
-			/*
-			int year = mDate.get(Calendar.YEAR);
-			int month = mDate.get(Calendar.MONTH);
-			int day = mDate.get(Calendar.DAY_OF_MONTH);
-			int hour = mDate.get(Calendar.HOUR);
-			int minutes = mDate.get(Calendar.MINUTE);
-						
-			int ert=0;
-			ert++;
-			*/
-			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

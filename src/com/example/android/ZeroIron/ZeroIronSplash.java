@@ -47,7 +47,7 @@ public class ZeroIronSplash extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Toast.makeText(ZeroIronSplash.this, "Martin Goulet", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(ZeroIronSplash.this, "Martin Goulet", Toast.LENGTH_SHORT).show();
 		
 		//DO NOTHING
 	}

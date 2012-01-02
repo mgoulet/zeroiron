@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 public class ZeroIronCourseStructure implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	public static final String COURSE_STRUCTURE = "COURSE_STRUCTURE";
 	
-	private String mCourseName;
-	private String mCourseLocation;
-	private int mCoursePar;
-	private int mCourseSize;
+	protected String mCourseName;
+	protected String mCourseLocation;
+	protected int mCoursePar;
+	protected int mCourseSize;
 	
 	public ZeroIronCourseStructure() {
 		this.mCourseName = new String("Pineview Golf - Executive Course");

@@ -2,43 +2,34 @@ package com.example.android.ZeroIron;
 
 import android.app.Activity;
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
 
 public class ZeroIronCourseList extends ListActivity implements OnItemLongClickListener, EditDeletePopupInvoker {
 
-	private ZeroIronDbAdapter mDbAdapter;
-	public static final int NEW_ID = Menu.FIRST;
-	public static final int GEN_ID = Menu.FIRST+1;
-	public static final int DEL_ID = Menu.FIRST+2;
+	protected ZeroIronDbAdapter mDbAdapter;
 	
-	public static final int COURSE_NAME_COLUMN = 1;
-	public static final int COURSE_LOCATION_COLUMN = 2;
-	public static final int COURSE_PAR_COLUMN = 3;
-	public static final int COURSE_SIZE_COLUMN = 4;
+	protected static final int NEW_ID = Menu.FIRST;
+	protected static final int GEN_ID = Menu.FIRST+1;
+	protected static final int DEL_ID = Menu.FIRST+2;
 	
-	public static final int COURSE_EDIT_ACTIVITY_ID = 0;
-	public static final int GAME_EDIT_ACTIVITY_ID = 1;
+	protected static final int COURSE_EDIT_ACTIVITY_ID = 0;
+	protected static final int GAME_EDIT_ACTIVITY_ID = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.zeroiron_courselist);
 
-		mDbAdapter = new ZeroIronDbAdapter(this);
-		mDbAdapter.open();
+		mDbAdapter = ZeroIronApplication.getDbAdapter();
 		
 		mDbAdapter.createCoursesTableIfRequired();
 		
@@ -79,7 +70,7 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		ListView listView = this.getListView();
 		Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 		
-		String courseName = cursor.getString(COURSE_NAME_COLUMN);
+		String courseName = cursor.getString(ZeroIronDbAdapter.COURSE_NAME_COLUMN);
 
 		//2 - retrieve courseId from database
 		int courseId = mDbAdapter.fetchCourseIdFromName(courseName);
@@ -102,12 +93,12 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 			Bundle bundle = data.getExtras();
 			
 			//retrieve the data structure from bundle
-			ZeroIronCourseStructure newCourseStructure = (ZeroIronCourseStructure) bundle.getSerializable(ZeroIronCourseEdit.NEW_RECORD);
+			ZeroIronCourseStructure newCourseStructure = (ZeroIronCourseStructure) bundle.getSerializable(ZeroIronDbAdapter.NEW_RECORD);
 			ZeroIronCourseStructure oldCourseStructure = null;
 			
 			//retrieve old values if applicable
-			if (bundle.containsKey(ZeroIronCourseEdit.OLD_RECORD)) {
-				oldCourseStructure = (ZeroIronCourseStructure) bundle.getSerializable(ZeroIronCourseEdit.OLD_RECORD);
+			if (bundle.containsKey(ZeroIronDbAdapter.OLD_RECORD)) {
+				oldCourseStructure = (ZeroIronCourseStructure) bundle.getSerializable(ZeroIronDbAdapter.OLD_RECORD);
 			}
 			
 			//update existing record
@@ -119,7 +110,7 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 			
 			//retrieve game from intent
 			Bundle bundle = data.getExtras();
-			ZeroIronGameStructure newGame = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronCourseEdit.NEW_RECORD);
+			ZeroIronGameStructure newGame = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronDbAdapter.NEW_RECORD);
 			
 			//store in DB
 			mDbAdapter.writeGame(null, newGame);
@@ -248,10 +239,10 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		//1 - retrieve parameters from user selection
 		ListView listView = this.getListView();
 		Cursor cursor = (Cursor) listView.getItemAtPosition(rowId); 
-		String courseName = cursor.getString(COURSE_NAME_COLUMN);
-		String courseLocation = cursor.getString(COURSE_LOCATION_COLUMN);
-		int coursePar = cursor.getInt(COURSE_PAR_COLUMN);
-		int courseSize = cursor.getInt(COURSE_SIZE_COLUMN);
+		String courseName = cursor.getString(ZeroIronDbAdapter.COURSE_NAME_COLUMN);
+		String courseLocation = cursor.getString(ZeroIronDbAdapter.COURSE_LOCATION_COLUMN);
+		int coursePar = cursor.getInt(ZeroIronDbAdapter.COURSE_PAR_COLUMN);
+		int courseSize = cursor.getInt(ZeroIronDbAdapter.COURSE_SIZE_COLUMN);
 
 		//2 - build structure		
 		ZeroIronCourseStructure course =
@@ -259,7 +250,7 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 
 		//3 - send to edit activity via intent		
 		Intent i = new Intent(ZeroIronCourseList.this, ZeroIronCourseEdit.class);
-		i.putExtra(ZeroIronCourseEdit.OLD_RECORD, course);
+		i.putExtra(ZeroIronDbAdapter.OLD_RECORD, course);
 		startActivityForResult(i, COURSE_EDIT_ACTIVITY_ID);
 	}
 	
@@ -267,7 +258,7 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		//get a handle on the name of the course at location 'rowId'
 		ListView listView = this.getListView();
 		Cursor cursor = (Cursor) listView.getItemAtPosition(rowId); 
-		String courseName = cursor.getString(COURSE_NAME_COLUMN);
+		String courseName = cursor.getString(ZeroIronDbAdapter.COURSE_NAME_COLUMN);
 		
 		//send it off for deletion from the database
 		

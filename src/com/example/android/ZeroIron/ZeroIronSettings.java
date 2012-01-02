@@ -31,8 +31,7 @@ public class ZeroIronSettings extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.zeroiron_settings);
 
-		mDbAdapter = new ZeroIronDbAdapter(this);
-		mDbAdapter.open();
+		mDbAdapter = ZeroIronApplication.getDbAdapter();
 		
 		buildClickListeners();
 		
@@ -48,7 +47,6 @@ public class ZeroIronSettings extends Activity {
 		transparencyCheckBox.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				CheckBox transparencyCheckBox = (CheckBox) findViewById(R.id.checkBox1);
-				int newValue = 0;
 				if ( transparencyCheckBox.isChecked()) {
 					mDbAdapter.settingsTableSetAttrib(TRANSPARENCY, TRANSPARENT_VALUE);
 				} else {
@@ -88,13 +86,11 @@ public class ZeroIronSettings extends Activity {
     
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 
@@ -108,13 +104,11 @@ public class ZeroIronSettings extends Activity {
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 	}
 

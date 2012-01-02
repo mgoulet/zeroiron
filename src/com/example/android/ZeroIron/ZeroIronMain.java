@@ -1,12 +1,10 @@
 package com.example.android.ZeroIron;
 
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
 
 public class ZeroIronMain extends TabActivity {
 
@@ -29,22 +27,10 @@ public class ZeroIronMain extends TabActivity {
 		
 		intent = new Intent().setClass(this, ZeroIronGamesList.class);
         spec = tabHost.newTabSpec("Tab1").setIndicator("Games",
-                res.getDrawable(R.drawable.pack32))
-            .setContent(intent);
-		tabHost.addTab(spec);
-		
-		intent = new Intent().setClass(this, ZeroIronScoreBoard.class);
-        spec = tabHost.newTabSpec("Tab2").setIndicator("Card",
                 res.getDrawable(R.drawable.ball32))
             .setContent(intent);
 		tabHost.addTab(spec);
-		/*
-		intent = new Intent().setClass(this, ZeroIronScoreBoard.class);
-        spec = tabHost.newTabSpec("Tab3").setIndicator("Stats",
-                res.getDrawable(R.drawable.pack32))
-            .setContent(intent);
-		tabHost.addTab(spec);
-		*/
+		
 		intent = new Intent().setClass(this, ZeroIronSettings.class);
         spec = tabHost.newTabSpec("Tab4").setIndicator("Options",
                 res.getDrawable(R.drawable.gear32))

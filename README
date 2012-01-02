@@ -1,0 +1,40 @@
+------------------------
+CURRENT COMMIT NOTES
+------------------------
+-fixed date fields
+-portrait mode only
+-removed scorecard functionality (keep app simple)
+-refactoring:
+	-remove unnecessary imports
+	-minor refactoring across the project
+	-change KEY_ROWID with proper ids from the defined constants...
+	-move COURSE_STRUCTURE into Db object.
+	-cleanup constants for db tables access - should all reside in DbAdapter, not in activities classes.
+	-refactor ZeroIronCourseEdit like ZeroIronGameEdit (onClickListeners and stuff)
+	-refactor dbAdapter as global Application Context 'singleton'
+
+------------------------
+REMAINING CORE FEATURES:
+------------------------
+-Ads support
+-Export to XML/DB on local/SD card
+-Twitter support
+
+------------------------
+OUTSTANDING ISSUES:
+------------------------
+-Add row sorting
+-Add score to game object
+-DB value validation on certain fields
+-fix/adjust image in games list
+-move to game list once game is created from a selected course
+-refactor code
+	-Add various comments to codebase
+	-rename widgets with appropriate names
+-Add description to the app on github (README) that will describe the goal & contents of the app.
+-Create quick description for app on market
+
+
+
+
+

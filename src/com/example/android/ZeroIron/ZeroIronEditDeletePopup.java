@@ -1,14 +1,9 @@
 package com.example.android.ZeroIron;
 
-import android.app.Activity;
-import android.app.TabActivity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,22 +13,18 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.TabHost;
 import android.widget.TableRow;
-import android.widget.Toast;
-import android.widget.TabHost.TabSpec;
 
 public class ZeroIronEditDeletePopup implements OnClickListener {
 
 	//members
 	protected final View anchor;
-	private final PopupWindow window;
-	private final WindowManager windowManager;
-	private View root;
-	private Drawable background = null;
+	protected final PopupWindow window;
+	protected final WindowManager windowManager;
+	protected View root;
+	protected Drawable background = null;
 	
 	private final int rowId;
 	

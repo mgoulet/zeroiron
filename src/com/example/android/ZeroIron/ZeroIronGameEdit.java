@@ -22,9 +22,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDateSetListener, OnTimeSetListener {
-
-	public static final String OLD_RECORD = "oldrecord";
-	public static final String NEW_RECORD = "newrecord";
 	
 	//for use when a new game is created from a course name and id.
 	protected int mCourseId;
@@ -35,16 +32,16 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 	//variable used in either cases above
 	protected String mCourseName;
 	
-	public static final int DATE_DIALOG_ID = 0;
-	public static final int TIME_DIALOG_ID = 1;
+	protected static final int DATE_DIALOG_ID = 0;
+	protected static final int TIME_DIALOG_ID = 1;
 	
-	private GregorianCalendar mActiveCalendar;
+	protected GregorianCalendar mActiveCalendar;
 	
 	//button handles for callbacks
-	ImageView mOkButton;
-	ImageView mCancelButton;
-	ImageButton mDateChangeButton;
-	ImageButton mTimeChangeButton;
+	protected ImageView mOkButton;
+	protected ImageView mCancelButton;
+	protected ImageButton mDateChangeButton;
+	protected ImageButton mTimeChangeButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,41 +68,28 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 	protected boolean prepareFromIntent() {
 		
 		Bundle bundle = getIntent().getExtras();
-		
+
 		if ( bundle != null && bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME) &&
 				   bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_ID) ) {
-
+			
+			//A new game is being created
+			
 			mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
 			mCourseId = bundle.getInt(ZeroIronDbAdapter.KEY_COURSE_ID);
-			
-			this.onDateSet(null,
-					mActiveCalendar.get(Calendar.YEAR),
-					mActiveCalendar.get(Calendar.MONTH),
-					mActiveCalendar.get(Calendar.DAY_OF_MONTH));
-			
-			this.onTimeSet(null,
-					mActiveCalendar.get(Calendar.HOUR),
-					mActiveCalendar.get(Calendar.MINUTE));
 			
 		} else if ( bundle != null && bundle.containsKey(ZeroIronGameStructure.GAME_STRUCTURE) &&
 				bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME)) {
 			
+			//An existing game is being edited
+			
 			mOldGameStructure = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronGameStructure.GAME_STRUCTURE);
 			mCourseId = mOldGameStructure.getCourseId();
+			mActiveCalendar = mOldGameStructure.getDate();
 			
 			//populate fields using game structure
 			
 			EditText gameNameText = (EditText) findViewById(R.id.editGameName);
 			gameNameText.setText(mOldGameStructure.getName());
-			
-			this.onDateSet(null,
-					mOldGameStructure.getDate().get(Calendar.YEAR),
-					mOldGameStructure.getDate().get(Calendar.MONTH),
-					mOldGameStructure.getDate().get(Calendar.DAY_OF_MONTH));
-			
-			this.onTimeSet(null,
-					mOldGameStructure.getDate().get(Calendar.HOUR),
-					mOldGameStructure.getDate().get(Calendar.MINUTE));
 			
 			EditText gameNotesText = (EditText) findViewById(R.id.editGameNotes);
 			gameNotesText.setText(mOldGameStructure.getNotes());
@@ -115,24 +99,32 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 			return false;
 		}
 		
-		//Retrieve course name
+		//populate course name
 		mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
-		
 		TextView textNameView = (TextView) findViewById(R.id.textCourseNameValue);
 		textNameView.setText(mCourseName);
+		
+		//populate date
+		this.onDateSet(null,
+				mActiveCalendar.get(Calendar.YEAR),
+				mActiveCalendar.get(Calendar.MONTH),
+				mActiveCalendar.get(Calendar.DAY_OF_MONTH));
+		
+		//populate time
+		this.onTimeSet(null,
+				mActiveCalendar.get(Calendar.HOUR),
+				mActiveCalendar.get(Calendar.MINUTE));
 		
 		return true;
 	}
 	
 	protected boolean setButtonListeners() {
-		
-		//set button references
+
 		mOkButton = (ImageView) findViewById(R.id.imageOk);
 		mCancelButton = (ImageView) findViewById(R.id.imageCancel);
 		mDateChangeButton = (ImageButton) findViewById(R.id.editGameDateButton);
 		mTimeChangeButton = (ImageButton) findViewById(R.id.editGameTimeButton);
 		
-		//link to this object as onClickListener
 		mOkButton.setOnClickListener(this);
 		mCancelButton.setOnClickListener(this);
 		mDateChangeButton.setOnClickListener(this);
@@ -164,13 +156,6 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		// TODO Auto-generated method stub
 		super.onStop();
 	}
-	
-
-	private boolean populateGameWidgets() {
-		
-		
-		return false;
-	}
 
 	@Override
 	public void onClick(View view) {
@@ -192,11 +177,11 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 						
 			//3 - return to invoking activity
 			Intent i = new Intent(ZeroIronGameEdit.this, ZeroIronGamesList.class);
-			i.putExtra(NEW_RECORD, newGameStructure);
+			i.putExtra(ZeroIronDbAdapter.NEW_RECORD, newGameStructure);
 			
 			//4 - If old game structure is not null, add it in the intent.
 			if (mOldGameStructure != null) {
-				i.putExtra(OLD_RECORD, mOldGameStructure);				
+				i.putExtra(ZeroIronDbAdapter.OLD_RECORD, mOldGameStructure);				
 			}
 			
 			setResult(RESULT_OK, i);
@@ -220,14 +205,14 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		switch (id) {
 		case DATE_DIALOG_ID:
 			return new DatePickerDialog(this, this,
-					GregorianCalendar.getInstance().get(Calendar.YEAR),
-					GregorianCalendar.getInstance().get(Calendar.MONTH),
-					GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH));
+					mActiveCalendar.get(Calendar.YEAR),
+					mActiveCalendar.get(Calendar.MONTH),
+					mActiveCalendar.get(Calendar.DAY_OF_MONTH));
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this, this,
-					GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY),
-					GregorianCalendar.getInstance().get(Calendar.MINUTE),
-					false);	
+					mActiveCalendar.get(Calendar.HOUR_OF_DAY),
+					mActiveCalendar.get(Calendar.MINUTE),
+					true );	
 		}
 		
 		return null;
@@ -240,7 +225,7 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		mActiveCalendar.set(year, month, day);
 		
 		//update fields
-		String dateText = new String (day + "/" + month + "/" + year);
+		String dateText = new String (day + "/" + (month + 1) + "/" + year);
 		TextView dateTextView = (TextView) findViewById(R.id.editGameDateField);
 		dateTextView.setText(dateText);
 
@@ -254,11 +239,10 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		
 		//update fields
 		String timeText;
-		if (hour > 12) {
-			hour -= 12;
-			timeText = new String(hour + ":" + minute + " PM");
+		if (minute < 10) {
+		timeText = new String(hour + ":0" + minute);
 		} else {
-			timeText = new String(hour + ":" + minute + " AM");
+			timeText = new String(hour + ":" + minute);
 		}
 		
 		TextView timeTextView = (TextView) findViewById(R.id.editGameTimeField);

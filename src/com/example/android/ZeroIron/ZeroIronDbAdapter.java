@@ -18,21 +18,13 @@
 package com.example.android.ZeroIron;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 /**
@@ -43,6 +35,8 @@ import android.widget.Toast;
  */
 public class ZeroIronDbAdapter {
 
+	public static final String OLD_RECORD = "oldrecord";
+	public static final String NEW_RECORD = "newrecord";
 	
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 	
@@ -52,6 +46,12 @@ public class ZeroIronDbAdapter {
 	public static final String KEY_COURSE_PAR = "par";
 	public static final String KEY_COURSE_SIZE = "size";		
 	
+	//Constants used as shortcut to map course record columns to textfields
+	public static final int COURSE_NAME_COLUMN = 1;
+	public static final int COURSE_LOCATION_COLUMN = 2;
+	public static final int COURSE_PAR_COLUMN = 3;
+	public static final int COURSE_SIZE_COLUMN = 4;
+	
 	public static final String KEY_GAME_ID = "_id";
 	public static final String KEY_GAME_COURSE_ID = "course_id";
 	public static final String KEY_GAME_NAME = "name";
@@ -59,11 +59,20 @@ public class ZeroIronDbAdapter {
 	public static final String KEY_GAME_NOTES = "notes";
 	public static final String KEY_GAME_STATUS = "status";
 	
+	//Constants used as shortcut to map game record columns to textfields
+	public static final int GAME_ID_COLUMN 			= 0;
+	public static final int GAME_COURSE_ID_COLUMN 	= 1;
+	public static final int GAME_NAME_COLUMN 		= 2;
+	public static final int GAME_DATE_COLUMN 		= 3;
+	public static final int GAME_NOTES_COLUMN 		= 4;
+	public static final int GAME_STATUS_COLUMN 		= 5;
+	
 	public static final String KEY_ROWID = "_id";
     public static final String KEY_HOLE = "hole";
     public static final String KEY_PAR = "par";
     public static final String KEY_SCORE = "score";
     
+    public static final String KEY_SETTING_ID = "_id";
     public static final String KEY_SETTING = "setting";
     public static final String KEY_VALUE = "value";
         
@@ -83,10 +92,6 @@ public class ZeroIronDbAdapter {
             "create table if not exists games (_id integer primary key autoincrement, "
             + KEY_GAME_COURSE_ID + " integer not null, " + KEY_GAME_NAME + " text not null, " + KEY_GAME_DATE + " text not null, "
             + KEY_GAME_NOTES + " text not null, " + KEY_GAME_STATUS + " integer not null" + ");";
-            
-    private static final String DATABASE_CREATE_SCORES =
-        "create table if not exists scores (_id integer primary key autoincrement, "
-        + "hole text not null, par text not null, score text not null);";
     
     private static final String DATABASE_CREATE_SETTINGS =
             "create table if not exists settings (_id integer primary key autoincrement, "
@@ -95,7 +100,6 @@ public class ZeroIronDbAdapter {
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_COURSES = "courses";
     private static final String DATABASE_GAMES = "games";
-    private static final String DATABASE_SCORES = "scores";
     private static final String DATABASE_SETTINGS = "settings";
     private static final int DATABASE_VERSION = 2;
 
@@ -111,7 +115,6 @@ public class ZeroIronDbAdapter {
         public void onCreate(SQLiteDatabase db) {
         	db.execSQL(DATABASE_CREATE_COURSES);
         	db.execSQL(DATABASE_CREATE_GAMES);
-            db.execSQL(DATABASE_CREATE_SCORES);
             db.execSQL(DATABASE_CREATE_SETTINGS);
         }
 
@@ -142,16 +145,6 @@ public class ZeroIronDbAdapter {
     
     public boolean createCoursesTableIfRequired() {
     	
-    	//test to see if table is actually deleted.
-    	Cursor x;
-    	try {
-    		x = mDb.query(DATABASE_COURSES, new String[] {KEY_ROWID, KEY_COURSE_NAME,
-	        		KEY_COURSE_LOCATION, KEY_COURSE_PAR, KEY_COURSE_SIZE}, null, null, null, null, null);
-    	} catch (Exception e) {
-    		int ert=0;
-    		ert++;
-    	}
-    	
     	try {
     		mDb.execSQL(DATABASE_CREATE_COURSES);
     	} catch (Exception e) {
@@ -160,11 +153,10 @@ public class ZeroIronDbAdapter {
     	}    	
     	return true;
     }
-    
 
     public Cursor fetchAllCourses() { 
     	try {
-	        return mDb.query(DATABASE_COURSES, new String[] {KEY_ROWID, KEY_COURSE_NAME,
+	        return mDb.query(DATABASE_COURSES, new String[] {KEY_COURSE_ID, KEY_COURSE_NAME,
 	        		KEY_COURSE_LOCATION, KEY_COURSE_PAR, KEY_COURSE_SIZE}, null, null, null, null, null);
     	} catch (Exception e ) {
     		Toast.makeText(this.mCtx, "Error fetching all courses.", Toast.LENGTH_SHORT).show();
@@ -232,9 +224,6 @@ public class ZeroIronDbAdapter {
     		ContentValues oldValues = new ContentValues();
     		oldValues.put(KEY_COURSE_NAME, "'" + oldCourseStructure.getCourseName() + "'");
     		
-    		String newTest = newValues.toString();
-    		String oldTest = oldValues.toString();
-    		
     		return mDb.update(DATABASE_COURSES, newValues, oldValues.toString(), null) > 0;
 
     	}
@@ -256,21 +245,17 @@ public class ZeroIronDbAdapter {
     public boolean deleteCourse(String courseName) {
     	
     	try {
-    		
     		mDb.delete(DATABASE_COURSES, KEY_COURSE_NAME + "='" + courseName + "'", null);
-    		
     	} catch (Exception e) {
     		Toast.makeText(this.mCtx, "Error deleting course with name" + courseName + ".", Toast.LENGTH_SHORT).show();
     		return false;
     	}
     	
-    	int ert=0;
-    	ert++;
-    	
     	return true;
     }
     
     public boolean dropCoursesTable() {
+    	
     	try {
     		mDb.execSQL("drop table courses");
     	} catch (Exception e) {
@@ -285,16 +270,6 @@ public class ZeroIronDbAdapter {
 
     public boolean createGamesTableIfRequired() {
     	
-    	//test to see if table is actually deleted.
-    	Cursor x;
-    	try {
-    		x = mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
-	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, null, null, null, null, null);
-    	} catch (Exception e) {
-    		int ert=0;
-    		ert++;
-    	}
-    	
     	try {
     		mDb.execSQL(DATABASE_CREATE_GAMES);
     	} catch (Exception e) {
@@ -305,8 +280,9 @@ public class ZeroIronDbAdapter {
     }
     
     public Cursor fetchAllGames() { 
+    	
     	try {
-	        return mDb.query(DATABASE_GAMES, new String[] {KEY_ROWID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
+	        return mDb.query(DATABASE_GAMES, new String[] {KEY_GAME_ID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
 	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, null, null, null, null, null);
     	} catch (Exception e ) {
     		Toast.makeText(this.mCtx, "Error fetching all games.", Toast.LENGTH_SHORT).show();
@@ -318,7 +294,7 @@ public class ZeroIronDbAdapter {
     public Cursor fetchGameFromName(String name) {
     	
     	try {
-    		Cursor cursor = mDb.query(DATABASE_GAMES,  new String[] {KEY_ROWID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
+    		Cursor cursor = mDb.query(DATABASE_GAMES,  new String[] {KEY_GAME_ID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
 	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, KEY_GAME_NAME + "= '" + name + "'", null, null, null, null, null);
             if (cursor != null) {
             	cursor.moveToFirst();
@@ -361,9 +337,6 @@ public class ZeroIronDbAdapter {
     		ContentValues oldValues = new ContentValues();
     		oldValues.put(KEY_GAME_NAME, "'" + oldGameStructure.getName() + "'");
     		
-    		String newTest = newValues.toString();
-    		String oldTest = oldValues.toString();
-    		
     		return mDb.update(DATABASE_GAMES, newValues, oldValues.toString(), null) > 0;
 
     	}    	
@@ -385,7 +358,7 @@ public class ZeroIronDbAdapter {
     public boolean deleteGame(String gameName) {
     	
     	try {
-    		int x = mDb.delete(DATABASE_GAMES, KEY_GAME_NAME + "='" + gameName + "'", null);
+    		mDb.delete(DATABASE_GAMES, KEY_GAME_NAME + "='" + gameName + "'", null);
     	} catch (Exception e) {
     		Toast.makeText(this.mCtx, "Error deleting game with name" + gameName + ".", Toast.LENGTH_SHORT).show();
     		return false;
@@ -406,64 +379,6 @@ public class ZeroIronDbAdapter {
     }
     
 ////////////////////////////////////////////////////////////////////////
-     
-    
-    public long createScore(int hole, int par, int score) {
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_HOLE, hole);
-        initialValues.put(KEY_PAR, par);
-        initialValues.put(KEY_SCORE, score);
-
-        return mDb.insert(DATABASE_SCORES, null, initialValues);
-    }
-
-    public Cursor fetchScore(long rowId) throws SQLException {
-
-        Cursor mCursor =
-
-            mDb.query(true, DATABASE_SCORES, new String[] {KEY_ROWID,
-                    KEY_HOLE, KEY_PAR, KEY_SCORE}, KEY_ROWID + "=" + rowId, null,
-                    null, null, null, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
-
-    public boolean updateScore(long rowId, int hole, int par, int score) {
-        ContentValues args = new ContentValues();
-        args.put(KEY_HOLE, hole);
-        args.put(KEY_PAR, par);
-        args.put(KEY_SCORE, score);
-
-        return mDb.update(DATABASE_SCORES, args, KEY_ROWID + "=" + rowId, null) > 0;
-    }
-
-    public Cursor fetchAllScores() {
-
-        return mDb.query(DATABASE_SCORES, new String[] {KEY_ROWID, KEY_HOLE,
-                KEY_PAR, KEY_SCORE}, null, null, null, null, null);
-    }
-    
-    public void deleteAllScores() {
-    	
-    	try {
-    		mDb.delete(DATABASE_SCORES, null, null);
-    	} catch (Exception e) {
-    		Toast.makeText(this.mCtx, "Scores table does not exist.", Toast.LENGTH_SHORT).show();
-    	}
-    	
-    }
-
-    public long getCount() {
-    	String sql = "SELECT COUNT(*) FROM " + DATABASE_SCORES;
-        SQLiteStatement statement = mDb.compileStatement(sql);
-        long count = statement.simpleQueryForLong();
-    	
-    	return count;
-    }
-
-/////////////////////////////////////////////
 
     //Method that attempts to create a settings database if it does not exist.
     public boolean settingsTableRebuild() {
@@ -516,7 +431,7 @@ public class ZeroIronDbAdapter {
     
     public Cursor settingsTableFetchAllSettings() {
     	try {
-    		return mDb.query(DATABASE_SETTINGS, new String[] {KEY_ROWID, KEY_SETTING,
+    		return mDb.query(DATABASE_SETTINGS, new String[] {KEY_SETTING_ID, KEY_SETTING,
                 KEY_VALUE}, null, null, null, null, null);
     	} catch (Exception e) {
     		Toast.makeText(this.mCtx, "Error reading settings. Rebuilding...", Toast.LENGTH_SHORT).show();

@@ -27,7 +27,7 @@
 	  		android:orientation="vertical"
 	  		android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="70">
 	  	<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Date" android:textColor="#FFFFFF" android:id="@+id/editGameDateLabel"></TextView>
-	  	<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="6/7/2012" android:textColor="#FFFFFF" android:id="@+id/editGameDateField"></TextView>
+	  	<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="--/--/----" android:textColor="#FFFFFF" android:id="@+id/editGameDateField"></TextView>
 		</LinearLayout>
 	  	<ImageButton android:src="@drawable/calendar_1" android:layout_height="wrap_content" android:id="@+id/editGameDateButton" android:layout_width="wrap_content"></ImageButton>
   	</LinearLayout>
@@ -40,7 +40,7 @@
 		  	android:orientation="vertical"
 		  	android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="70">
 	  		<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Time" android:textColor="#FFFFFF" android:id="@+id/editGameTimeLabel"></TextView>
-	  		<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="8:00 AM" android:textColor="#FFFFFF" android:id="@+id/editGameTimeField" android:layout_weight="80"></TextView>	  		
+	  		<TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="--:-- -M" android:textColor="#FFFFFF" android:id="@+id/editGameTimeField" android:layout_weight="80"></TextView>	  		
 	  	  </LinearLayout>
 	  	<ImageButton android:src="@drawable/time_1" android:layout_height="wrap_content" android:id="@+id/editGameTimeButton" android:layout_width="wrap_content"></ImageButton>
   	</LinearLayout>
