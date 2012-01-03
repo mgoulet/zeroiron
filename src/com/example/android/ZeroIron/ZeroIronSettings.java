@@ -40,7 +40,7 @@ public class ZeroIronSettings extends Activity {
 	}
 	
 	private void buildClickListeners() {
-		
+		/*
 		//checkbox
 		CheckBox transparencyCheckBox = new CheckBox(this);
 		transparencyCheckBox = (CheckBox) findViewById(R.id.checkBox1);
@@ -54,11 +54,12 @@ public class ZeroIronSettings extends Activity {
 				}
 			}
 		});
+		*/
 
 	}
 	
     private void displaySettings() {
-        
+        /*
     	// Get a handle on all settings and display them
         Cursor c = mDbAdapter.settingsTableFetchAllSettings();
         
@@ -81,6 +82,7 @@ public class ZeroIronSettings extends Activity {
         		}
         	} while (c.moveToNext());
         }
+        */
         
     }
     

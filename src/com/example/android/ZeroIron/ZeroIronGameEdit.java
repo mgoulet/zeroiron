@@ -178,8 +178,14 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 			newGameStructure.setName(nameText.getText().toString());
 			newGameStructure.setDate(mActiveCalendar);
 			newGameStructure.setNotes(notesText.getText().toString());
-			newGameStructure.setScore(Integer.parseInt(gameScoreText.getText().toString()));
 			newGameStructure.setStatus(0);
+			
+			String tmp = gameScoreText.getText().toString();
+			if (tmp.equals("")) {
+				newGameStructure.setScore(0);
+			} else {
+				newGameStructure.setScore(Integer.parseInt(tmp));
+			}
 						
 			//3 - return to invoking activity
 			Intent i = new Intent(ZeroIronGameEdit.this, ZeroIronGamesList.class);

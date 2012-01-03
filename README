@@ -1,25 +1,26 @@
 ------------------------
 CURRENT COMMIT NOTES
 ------------------------
--added score to game object
--fixed minor issues
+-adjusted about page
+-restrict deletion of courses if there exists a game in the system that links to it
+-restrict saving a course if an existing course has the same name
+-unique course list
+-unique games list
 
 ------------------------
-REMAINING CORE FEATURES:
+REMAINING THINGS:
 ------------------------
--Backups
-	-Export / load from DB format
-	-Export to XML on local/SD card
--Add settings to app
--Twitter support
+-code documentation
+-feature list
 -Ads support
 
 ------------------------
-OUTSTANDING ISSUES:
+IDEAS:
 ------------------------
+-Use Google backup service 
+-Add settings to app
+-Twitter support
 -Add row sorting
--DB value validation on certain fields
--fix/adjust image in games list
 -move to game list once game is created from a selected course
 -refactor code
 	-Add various comments to codebase

@@ -20,9 +20,9 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	//to be refactored
 	public static ZeroIronDbAdapter mDbAdapter;
 	
-	protected static final int NEW_ID = Menu.FIRST;
-	protected static final int GEN_ID = Menu.FIRST+1;
-	protected static final int DEL_ID = Menu.FIRST+2;
+	//protected static final int NEW_ID = Menu.FIRST;
+	//protected static final int GEN_ID = Menu.FIRST+1;
+	//protected static final int DEL_ID = Menu.FIRST+2;
 	
 	String[] from = new String[] {  ZeroIronDbAdapter.KEY_GAME_COURSE_ID,
 			ZeroIronDbAdapter.KEY_GAME_NAME,        								
@@ -153,15 +153,16 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	menu.add(0, NEW_ID, 0, R.string.menu_new_game);
-        menu.add(0, GEN_ID, 0, R.string.menu_gen_games);
-        menu.add(0, DEL_ID, 0, R.string.menu_clear_games);
+    	//menu.add(0, NEW_ID, 0, R.string.menu_new_game);
+        //menu.add(0, GEN_ID, 0, R.string.menu_gen_games);
+        //menu.add(0, DEL_ID, 0, R.string.menu_clear_games);
         return true;
     }	
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch(item.getItemId()) {
+        /*
+    	switch(item.getItemId()) {
         case NEW_ID:
 
     		//build intent for edit screen
@@ -180,7 +181,7 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
            	mDbAdapter.createGamesTableIfRequired();
            	break;
         }
-        
+        */
         fillData();
 
         return super.onMenuItemSelected(featureId, item);

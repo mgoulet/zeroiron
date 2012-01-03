@@ -6,29 +6,50 @@
   
   	<LinearLayout
   		android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="56dp">
-     	<CheckBox android:id="@+id/checkBox1"
-     		android:text="Scoreboard Backdrop"
-     		android:layout_height="wrap_content" android:layout_width="fill_parent"
-     		android:layout_weight="1"/>
+	      		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+					android:text="Le About"
+			   		android:layout_height="wrap_content"
+			   		android:layout_width="wrap_content"
+			   		android:textStyle="bold"
+				    android:padding="3dip"
+				    android:textAppearance="?android:attr/textAppearanceLarge"
+				    android:textColor="#00FF00"
+				    android:layout_weight="80"/>
 	</LinearLayout>
 	
-    <LinearLayout
-    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-     	android:layout_weight="3">
-        <TextView android:id="@+id/textView1"
-        	android:layout_height="wrap_content" android:layout_width="160dp"
-        	android:textSize="6pt"
-        	android:text="Created by Martin Goulet twitter: @martingoulet. This app guarantees better golf scores or your money back. :)"
-        	android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
-		<ImageView android:layout_width="150dp"
-			android:layout_weight="1"
-			android:id="@+id/imageView1"
-			android:src="@drawable/marty200x200" android:layout_height="150dp"/>     		
+	<LinearLayout
+    	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	    <LinearLayout
+	    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+	     	android:layout_weight="3">
+	     	<LinearLayout
+	    		android:orientation="vertical" android:layout_width="160dp" android:layout_height="128dp" android:layout_weight="1.37">
+		        <TextView android:id="@+id/textView5" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="Created by Martin Goulet."/>
+		        <TextView android:id="@+id/textView6" android:textStyle="bold" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="twitter:"/>
+		        <TextView android:id="@+id/textView9" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="martingoulet"/>
+		        <TextView android:id="@+id/textView8" android:textStyle="bold" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="public Github repo:"/>
+		        <TextView android:id="@+id/textView9" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="mgoulet/zeroiron."/>
+		        <TextView android:id="@+id/textView8" android:textStyle="bold" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="email:"/>
+		        <TextView android:id="@+id/textView9" android:layout_width="fill_parent" android:textSize="6pt" android:layout_height="wrap_content"
+		        	android:text="martin.goulet@gmail.com"/>
+		    </LinearLayout>
+			<ImageView android:layout_width="125dp"
+				android:layout_weight="1"
+				android:id="@+id/imageView1"
+				android:src="@drawable/marty200x200" android:layout_height="125dp"/>     		
+		</LinearLayout>
+		<TextView android:id="@+id/textView2"
+	        	android:layout_width="match_parent"
+	        	android:textSize="6pt"
+	        	android:text="The goal of this project is to experiment with various Android development features by developing a simple application allowing the user to track his or her golf games. feedback is appreciated. Enjoy!"
+	        	android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="152dp"></TextView>
 	</LinearLayout>
-      	
-  	<TextView android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_list"/>
+
      
 </LinearLayout>

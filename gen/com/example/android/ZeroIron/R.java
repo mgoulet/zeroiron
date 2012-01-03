@@ -64,7 +64,6 @@ public final class R {
         public static final int TextNotesLabel=0x7f080022;
         public static final int TextScoreLabel=0x7f080020;
         public static final int cancel_button=0x7f08002b;
-        public static final int checkBox1=0x7f080036;
         public static final int deleteButton=0x7f080032;
         public static final int deleteGameButton=0x7f080015;
         public static final int editButton=0x7f080031;
@@ -84,7 +83,7 @@ public final class R {
         public static final int imageCancel=0x7f080013;
         public static final int imageNextArrow=0x7f080007;
         public static final int imageOk=0x7f080012;
-        public static final int imageView1=0x7f080038;
+        public static final int imageView1=0x7f08003a;
         public static final int par=0x7f080034;
         public static final int radioGroup1=0x7f08000c;
         public static final int radioPar0=0x7f08000d;
@@ -97,7 +96,7 @@ public final class R {
         public static final int score_text=0x7f080028;
         public static final int spinner_par=0x7f080027;
         public static final int spinner_score=0x7f080029;
-        public static final int splash=0x7f080039;
+        public static final int splash=0x7f08003c;
         public static final int textBuffer=0x7f080008;
         public static final int textCourseLabel=0x7f080009;
         public static final int textCourseName=0x7f080000;
@@ -115,7 +114,11 @@ public final class R {
         public static final int textParValue=0x7f080004;
         public static final int textSizeLabel=0x7f080005;
         public static final int textSizeValue=0x7f080006;
-        public static final int textView1=0x7f080037;
+        public static final int textView2=0x7f08003b;
+        public static final int textView5=0x7f080036;
+        public static final int textView6=0x7f080037;
+        public static final int textView8=0x7f080039;
+        public static final int textView9=0x7f080038;
         public static final int textView_holeLabel=0x7f080024;
         public static final int textView_holeValue=0x7f080025;
         public static final int textView_par=0x7f080026;

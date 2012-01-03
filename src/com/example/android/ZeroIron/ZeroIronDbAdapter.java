@@ -61,6 +61,7 @@ public class ZeroIronDbAdapter {
 	public static final String KEY_GAME_STATUS = "status";
 	
 	//Constants used as shortcut to map game record columns to textfields
+	
 	public static final int GAME_ID_COLUMN 			= 0;
 	public static final int GAME_COURSE_ID_COLUMN 	= 1;
 	public static final int GAME_NAME_COLUMN 		= 2;
@@ -68,7 +69,7 @@ public class ZeroIronDbAdapter {
 	public static final int GAME_NOTES_COLUMN 		= 4;
 	public static final int GAME_SCORE_COLUMN 		= 5;
 	public static final int GAME_STATUS_COLUMN 		= 6;
-	
+		
     public static final String KEY_SETTING_ID = "_id";
     public static final String KEY_SETTING = "setting";
     public static final String KEY_VALUE = "value";
@@ -208,7 +209,12 @@ public class ZeroIronDbAdapter {
 	        initialValues.put(KEY_COURSE_PAR, newCourseStructure.getCoursePar());
 	        initialValues.put(KEY_COURSE_SIZE, newCourseStructure.getCourseSize());
 	
-	        return mDb.insert(DATABASE_COURSES, null, initialValues) > 0;
+	        if (!courseWithNameExist(newCourseStructure.getCourseName())) {
+	        	return mDb.insert(DATABASE_COURSES, null, initialValues) > 0;
+	        } else {
+	        	Toast.makeText(this.mCtx, "Error: Course name already exists.", Toast.LENGTH_SHORT).show();
+	        	return false;
+	        }
 	        
     	} else {
     		
@@ -221,8 +227,13 @@ public class ZeroIronDbAdapter {
     		ContentValues oldValues = new ContentValues();
     		oldValues.put(KEY_COURSE_NAME, "'" + oldCourseStructure.getCourseName() + "'");
     		
-    		return mDb.update(DATABASE_COURSES, newValues, oldValues.toString(), null) > 0;
-
+	        if (!courseWithNameExist(newCourseStructure.getCourseName())) {
+	        	return mDb.update(DATABASE_COURSES, newValues, oldValues.toString(), null) > 0;
+	        } else {
+	        	Toast.makeText(this.mCtx, "Error: Course name already exists.", Toast.LENGTH_SHORT).show();
+	        	return false;
+	        }
+    		
     	}
 
     }
@@ -249,6 +260,31 @@ public class ZeroIronDbAdapter {
     	}
     	
     	return true;
+    }
+    
+    protected boolean courseWithNameExist(String courseName) {
+    	
+    	Cursor c = fetchAllCourses();
+    	
+    	if (!c.moveToFirst()) {
+    		return false;
+    	}
+    	
+    	int count = 0;
+    	
+    	do {
+    		String result = c.getString(ZeroIronDbAdapter.COURSE_NAME_COLUMN);
+    		if (result.equals(courseName)) {
+    			count++;
+    		}
+    	} while (c.moveToNext());
+    	
+    	if (count!= 0) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
     }
     
     public boolean dropCoursesTable() {
@@ -321,9 +357,14 @@ public class ZeroIronDbAdapter {
             //format date property
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             newValues.put(KEY_GAME_DATE, sdf.format(newGameStructure.getDate().getTime()));
+        	
+	        if (!gameWithNameExist(newGameStructure.getName())) {
+	        	return mDb.insert(DATABASE_GAMES, null, newValues) > 0;
+	        } else {
+	        	Toast.makeText(this.mCtx, "Error: Game name already exists.", Toast.LENGTH_SHORT).show();
+	        	return false;
+	        }
             
-            return mDb.insert(DATABASE_GAMES, null, newValues) > 0;
-	        
     	} else {
     		
     		ContentValues newValues = new ContentValues();
@@ -336,7 +377,12 @@ public class ZeroIronDbAdapter {
     		ContentValues oldValues = new ContentValues();
     		oldValues.put(KEY_GAME_NAME, "'" + oldGameStructure.getName() + "'");
     		
-    		return mDb.update(DATABASE_GAMES, newValues, oldValues.toString(), null) > 0;
+	        if (!gameWithNameExist(newGameStructure.getName())) {
+	        	return mDb.update(DATABASE_GAMES, newValues, oldValues.toString(), null) > 0;
+	        } else {
+	        	Toast.makeText(this.mCtx, "Error: Game name already exists.", Toast.LENGTH_SHORT).show();
+	        	return false;
+	        }
 
     	}    	
 
@@ -364,6 +410,31 @@ public class ZeroIronDbAdapter {
     	}
 	
     	return true;
+    }
+    
+    protected boolean gameWithNameExist(String courseName) {
+    	
+    	Cursor c = fetchAllGames();
+    	
+    	if (!c.moveToFirst()) {
+    		return false;
+    	}
+    	
+    	int count = 0;
+    	
+    	do {
+    		String result = c.getString(ZeroIronDbAdapter.GAME_NAME_COLUMN);
+    		if (result.equals(courseName)) {
+    			count++;
+    		}
+    	} while (c.moveToNext());
+    	
+    	if (count!= 0) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
     }
     
     public boolean dropGamesTable() {

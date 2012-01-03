@@ -32,7 +32,7 @@ public class ZeroIronMain extends TabActivity {
 		tabHost.addTab(spec);
 		
 		intent = new Intent().setClass(this, ZeroIronSettings.class);
-        spec = tabHost.newTabSpec("Tab4").setIndicator("Options",
+        spec = tabHost.newTabSpec("Tab4").setIndicator("About",
                 res.getDrawable(R.drawable.gear32))
             .setContent(intent);
 		tabHost.addTab(spec);

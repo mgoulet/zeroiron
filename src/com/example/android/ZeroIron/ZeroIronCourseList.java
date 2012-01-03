@@ -12,14 +12,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class ZeroIronCourseList extends ListActivity implements OnItemLongClickListener, EditDeletePopupInvoker {
 
 	protected ZeroIronDbAdapter mDbAdapter;
 	
 	protected static final int NEW_ID = Menu.FIRST;
-	protected static final int GEN_ID = Menu.FIRST+1;
-	protected static final int DEL_ID = Menu.FIRST+2;
+	//protected static final int GEN_ID = Menu.FIRST+1;
+	//protected static final int DEL_ID = Menu.FIRST+2;
 	
 	protected static final int COURSE_EDIT_ACTIVITY_ID = 0;
 	protected static final int GAME_EDIT_ACTIVITY_ID = 1;
@@ -102,6 +103,7 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 			}
 			
 			//update existing record
+			
 			mDbAdapter.writeCourse(oldCourseStructure, newCourseStructure);
 						
 			fillData();
@@ -126,8 +128,8 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	menu.add(0, NEW_ID, 0, R.string.menu_new_course);
-        menu.add(0, GEN_ID, 0, R.string.menu_gen_courses);
-        menu.add(0, DEL_ID, 0, R.string.menu_clear_courses);
+        //menu.add(0, GEN_ID, 0, R.string.menu_gen_courses);
+        //menu.add(0, DEL_ID, 0, R.string.menu_clear_courses);
         return true;
     }	
 
@@ -143,14 +145,18 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
     		startActivityForResult(i, COURSE_EDIT_ACTIVITY_ID);
   
         	break;
+        	/*
         case GEN_ID:
            	generateCourses();
            	break;
+           	*/
+        	/*
         case DEL_ID:
            	mDbAdapter.deleteAllCourses();
            	mDbAdapter.dropCoursesTable();
            	mDbAdapter.createCoursesTableIfRequired();
            	break;
+           	*/
         }
         
         fillData();
@@ -260,9 +266,29 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		Cursor cursor = (Cursor) listView.getItemAtPosition(rowId); 
 		String courseName = cursor.getString(ZeroIronDbAdapter.COURSE_NAME_COLUMN);
 		
-		//send it off for deletion from the database
+		//check if a game references the course first
+		int courseId = mDbAdapter.fetchCourseIdFromName(courseName);
+		Cursor c = mDbAdapter.fetchAllGames();
 		
-		mDbAdapter.deleteCourse(courseName);
+		int numReferences = 0;
+		
+		if (!c.moveToFirst()) {
+			mDbAdapter.deleteCourse(courseName);
+		} else {
+	
+			do {
+				if (c.getInt(ZeroIronDbAdapter.GAME_COURSE_ID_COLUMN) == courseId) {
+					numReferences++;
+				}
+			} while (c.moveToNext());
+			
+			if (numReferences == 0) {
+				mDbAdapter.deleteCourse(courseName);
+			} else {
+				Toast.makeText(this.getApplicationContext(), "Cannot delete due to game reference.", Toast.LENGTH_SHORT).show();
+			}
+		}
+		
 		fillData();
 	}
 	
