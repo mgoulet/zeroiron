@@ -4,8 +4,7 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:icon="@drawable/ball48" android:label="@string/app_name"
-    			 android:name=".ZeroIronApplication" android:backupAgent="ZeroIronBackupAgent"
-    			 android:minSdkVersion="8">
+    			 android:name=".ZeroIronApplication">
         <activity android:name=".ZeroIronSplash"
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.NoTitleBar"
