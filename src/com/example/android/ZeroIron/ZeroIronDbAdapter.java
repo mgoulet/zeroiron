@@ -57,6 +57,7 @@ public class ZeroIronDbAdapter {
 	public static final String KEY_GAME_NAME = "name";
 	public static final String KEY_GAME_DATE = "date";
 	public static final String KEY_GAME_NOTES = "notes";
+	public static final String KEY_GAME_SCORE = "score";
 	public static final String KEY_GAME_STATUS = "status";
 	
 	//Constants used as shortcut to map game record columns to textfields
@@ -65,13 +66,9 @@ public class ZeroIronDbAdapter {
 	public static final int GAME_NAME_COLUMN 		= 2;
 	public static final int GAME_DATE_COLUMN 		= 3;
 	public static final int GAME_NOTES_COLUMN 		= 4;
-	public static final int GAME_STATUS_COLUMN 		= 5;
+	public static final int GAME_SCORE_COLUMN 		= 5;
+	public static final int GAME_STATUS_COLUMN 		= 6;
 	
-	public static final String KEY_ROWID = "_id";
-    public static final String KEY_HOLE = "hole";
-    public static final String KEY_PAR = "par";
-    public static final String KEY_SCORE = "score";
-    
     public static final String KEY_SETTING_ID = "_id";
     public static final String KEY_SETTING = "setting";
     public static final String KEY_VALUE = "value";
@@ -91,7 +88,7 @@ public class ZeroIronDbAdapter {
     private static final String DATABASE_CREATE_GAMES =
             "create table if not exists games (_id integer primary key autoincrement, "
             + KEY_GAME_COURSE_ID + " integer not null, " + KEY_GAME_NAME + " text not null, " + KEY_GAME_DATE + " text not null, "
-            + KEY_GAME_NOTES + " text not null, " + KEY_GAME_STATUS + " integer not null" + ");";
+            + KEY_GAME_NOTES + " text not null, " + KEY_GAME_SCORE + " integer not null, " + KEY_GAME_STATUS + " integer not null" + ");";
     
     private static final String DATABASE_CREATE_SETTINGS =
             "create table if not exists settings (_id integer primary key autoincrement, "
@@ -168,7 +165,7 @@ public class ZeroIronDbAdapter {
     public int fetchCourseIdFromName(String courseName) {
     	
     	try {
-    		Cursor cursor = mDb.query(DATABASE_COURSES,  new String[] {KEY_ROWID}, KEY_COURSE_NAME + "= '" + courseName + "'", null, null, null, null, null);
+    		Cursor cursor = mDb.query(DATABASE_COURSES,  new String[] {KEY_COURSE_ID}, KEY_COURSE_NAME + "= '" + courseName + "'", null, null, null, null, null);
             if (cursor != null) {
             	cursor.moveToFirst();
             	return cursor.getInt(0);
@@ -283,7 +280,7 @@ public class ZeroIronDbAdapter {
     	
     	try {
 	        return mDb.query(DATABASE_GAMES, new String[] {KEY_GAME_ID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
-	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, null, null, null, null, null);
+	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_SCORE, KEY_GAME_STATUS}, null, null, null, null, null);
     	} catch (Exception e ) {
     		Toast.makeText(this.mCtx, "Error fetching all games.", Toast.LENGTH_SHORT).show();
     		return null;
@@ -295,7 +292,7 @@ public class ZeroIronDbAdapter {
     	
     	try {
     		Cursor cursor = mDb.query(DATABASE_GAMES,  new String[] {KEY_GAME_ID, KEY_GAME_COURSE_ID, KEY_GAME_NAME,
-	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_STATUS}, KEY_GAME_NAME + "= '" + name + "'", null, null, null, null, null);
+	        		KEY_GAME_DATE, KEY_GAME_NOTES, KEY_GAME_SCORE, KEY_GAME_STATUS}, KEY_GAME_NAME + "= '" + name + "'", null, null, null, null, null);
             if (cursor != null) {
             	cursor.moveToFirst();
             	return cursor;
@@ -318,6 +315,7 @@ public class ZeroIronDbAdapter {
             newValues.put(KEY_GAME_COURSE_ID, newGameStructure.getCourseId());
             newValues.put(KEY_GAME_NAME, newGameStructure.getName());
             newValues.put(KEY_GAME_NOTES, newGameStructure.getNotes());
+            newValues.put(KEY_GAME_SCORE, newGameStructure.getScore());
             newValues.put(KEY_GAME_STATUS, newGameStructure.getStatus());
             
             //format date property
@@ -332,6 +330,7 @@ public class ZeroIronDbAdapter {
     		newValues.put(KEY_GAME_COURSE_ID, newGameStructure.getCourseId());
     		newValues.put(KEY_GAME_NAME, newGameStructure.getName());
     		newValues.put(KEY_GAME_NOTES, newGameStructure.getNotes());
+    		newValues.put(KEY_GAME_SCORE, newGameStructure.getScore());
     		newValues.put(KEY_GAME_STATUS, newGameStructure.getStatus());
             
     		ContentValues oldValues = new ContentValues();

@@ -59,13 +59,15 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         								ZeroIronDbAdapter.KEY_GAME_NAME,        								
         								ZeroIronDbAdapter.KEY_GAME_DATE,
         								ZeroIronDbAdapter.KEY_GAME_NOTES,
-        								ZeroIronDbAdapter.KEY_GAME_STATUS};
+        								ZeroIronDbAdapter.KEY_GAME_SCORE,/*,
+        								ZeroIronDbAdapter.KEY_GAME_STATUS*/};
         
         int[] to = new int[] { R.id.textCourseName,
         					   R.id.textGameName,
         					   R.id.textGameDate,
         					   R.id.textGameNotes,
-        					   R.id.imageStatus};
+        					   R.id.textGameScore,/*,
+        					   R.id.imageStatus*/};
       
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter cursor =
@@ -101,21 +103,11 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         			TextView notesText = (TextView) view;
         			notesText.setText(cursor.getString(colIndex));
         			
-        		} else if (colName.equals(ZeroIronDbAdapter.KEY_GAME_STATUS)) {
-        			
-        			//1 - retrieve value
-        			int status = cursor.getInt(colIndex);
-        			
-        			//2 - get a handle on the imageView from the xml layout
-        			ImageView imageView = (ImageView) findViewById(R.id.imageStatus);
-        			
-        			
-        			//3 - shove value in the view handle...
-        			if (status == 0) {
-        				
-        			} else {
-        				
-        			}
+        		} else if (colName.equals(ZeroIronDbAdapter.KEY_GAME_SCORE)) {
+        		
+        			TextView scoreText = (TextView) view;
+        			String tmp = new String("" + cursor.getInt(colIndex));
+        			scoreText.setText(tmp);
         			
         		}
         		
@@ -259,6 +251,7 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 				gameCursor.getString(ZeroIronDbAdapter.GAME_NAME_COLUMN),
 				gameCursor.getString(ZeroIronDbAdapter.GAME_DATE_COLUMN),
 				gameCursor.getString(ZeroIronDbAdapter.GAME_NOTES_COLUMN),
+				gameCursor.getInt(ZeroIronDbAdapter.GAME_SCORE_COLUMN),
 				gameCursor.getInt(ZeroIronDbAdapter.GAME_STATUS_COLUMN));
 		
 		//3 - fetch course name from GameStructure's CourseId

@@ -32,11 +32,14 @@
 			        	android:textSize="6pt"
 			        	android:text="-----------"
 			        	android:textAppearance="?android:attr/textAppearanceMedium"/>
-			    </LinearLayout>    
-		        	<ImageView android:id="@+id/imageStatus"
-						android:layout_width="48dp"
-						android:layout_weight="20"
-						android:src="@drawable/game_complete" android:layout_height="48dp"/>
+			    </LinearLayout>
+			    <RelativeLayout
+			    	android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="match_parent">
+			    	<TextView android:id="@+id/textGameScore"
+			    	android:textSize="10pt" android:textStyle="bold"
+			    	android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:gravity="center"
+			        android:layout_height="fill_parent" android:text="123 " android:textAppearance="?android:attr/textAppearanceMedium"/>
+				</RelativeLayout>
 			</LinearLayout>
 	       	<LinearLayout
 	    	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="20pt"

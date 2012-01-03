@@ -56,7 +56,7 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		mOldGameStructure = null;
 		
 		mActiveCalendar = new GregorianCalendar();
-			
+
 		//different behaviour if a new game is created or an existing one is edited
 		prepareFromIntent();
 		
@@ -93,6 +93,10 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 			
 			EditText gameNotesText = (EditText) findViewById(R.id.editGameNotes);
 			gameNotesText.setText(mOldGameStructure.getNotes());
+			
+			EditText gameScoreText = (EditText) findViewById(R.id.editGameScore);
+			String tmp = new String( "" + mOldGameStructure.getScore());
+			gameScoreText.setText(tmp);
 						
 		} else {
 			Toast.makeText(this, "ERR: Intent contents corrupt", Toast.LENGTH_SHORT).show();
@@ -165,6 +169,7 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 			//1 - retrieve content from widgets
 			TextView nameText = (TextView) findViewById(R.id.editGameName);
 			TextView notesText = (TextView) findViewById(R.id.editGameNotes);
+			TextView gameScoreText = (TextView) findViewById(R.id.editGameScore);
 			
 			//2 - store in structure
 			ZeroIronGameStructure newGameStructure = new ZeroIronGameStructure();
@@ -173,6 +178,7 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 			newGameStructure.setName(nameText.getText().toString());
 			newGameStructure.setDate(mActiveCalendar);
 			newGameStructure.setNotes(notesText.getText().toString());
+			newGameStructure.setScore(Integer.parseInt(gameScoreText.getText().toString()));
 			newGameStructure.setStatus(0);
 						
 			//3 - return to invoking activity
