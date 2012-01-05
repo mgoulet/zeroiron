@@ -1,7 +1,15 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -17,11 +25,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDateSetListener, OnTimeSetListener {
+	
+	protected AdView adView;
 	
 	//for use when a new game is created from a course name and id.
 	protected int mCourseId;
@@ -49,6 +60,21 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.zeroiron_editgame);
 
+		/*
+		adView = new AdView(this, AdSize.BANNER, "ABC");
+		
+		LinearLayout ll = (LinearLayout) findViewById(R.id.adLinearLayoutGameEdit);
+		
+		ll.addView(adView);
+		
+		AdRequest adRequest = new AdRequest();
+		adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+		adRequest.addTestDevice("ABC");
+				
+		adView.loadAd(adRequest);
+		//adView.loadAd(new AdRequest());
+		*/
+		
 		//set members to zero or null
 		mCourseName = null;
 		mCourseId = 0;
@@ -64,78 +90,7 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		setButtonListeners();		
 		
 	}
-	
-	protected boolean prepareFromIntent() {
-		
-		Bundle bundle = getIntent().getExtras();
 
-		if ( bundle != null && bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME) &&
-				   bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_ID) ) {
-			
-			//A new game is being created
-			
-			mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
-			mCourseId = bundle.getInt(ZeroIronDbAdapter.KEY_COURSE_ID);
-			
-		} else if ( bundle != null && bundle.containsKey(ZeroIronGameStructure.GAME_STRUCTURE) &&
-				bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME)) {
-			
-			//An existing game is being edited
-			
-			mOldGameStructure = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronGameStructure.GAME_STRUCTURE);
-			mCourseId = mOldGameStructure.getCourseId();
-			mActiveCalendar = mOldGameStructure.getDate();
-			
-			//populate fields using game structure
-			
-			EditText gameNameText = (EditText) findViewById(R.id.editGameName);
-			gameNameText.setText(mOldGameStructure.getName());
-			
-			EditText gameNotesText = (EditText) findViewById(R.id.editGameNotes);
-			gameNotesText.setText(mOldGameStructure.getNotes());
-			
-			EditText gameScoreText = (EditText) findViewById(R.id.editGameScore);
-			String tmp = new String( "" + mOldGameStructure.getScore());
-			gameScoreText.setText(tmp);
-						
-		} else {
-			Toast.makeText(this, "ERR: Intent contents corrupt", Toast.LENGTH_SHORT).show();
-			return false;
-		}
-		
-		//populate course name
-		mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
-		TextView textNameView = (TextView) findViewById(R.id.textCourseNameValue);
-		textNameView.setText(mCourseName);
-		
-		//populate date
-		this.onDateSet(null,
-				mActiveCalendar.get(Calendar.YEAR),
-				mActiveCalendar.get(Calendar.MONTH),
-				mActiveCalendar.get(Calendar.DAY_OF_MONTH));
-		
-		//populate time
-		this.onTimeSet(null,
-				mActiveCalendar.get(Calendar.HOUR),
-				mActiveCalendar.get(Calendar.MINUTE));
-		
-		return true;
-	}
-	
-	protected boolean setButtonListeners() {
-
-		mOkButton = (ImageView) findViewById(R.id.imageOk);
-		mCancelButton = (ImageView) findViewById(R.id.imageCancel);
-		mDateChangeButton = (ImageButton) findViewById(R.id.editGameDateButton);
-		mTimeChangeButton = (ImageButton) findViewById(R.id.editGameTimeButton);
-		
-		mOkButton.setOnClickListener(this);
-		mCancelButton.setOnClickListener(this);
-		mDateChangeButton.setOnClickListener(this);
-		mTimeChangeButton.setOnClickListener(this);
-		
-		return true;
-	}
 	
 	@Override
 	protected void onDestroy() {
@@ -260,6 +215,90 @@ public class ZeroIronGameEdit extends Activity implements OnClickListener, OnDat
 		TextView timeTextView = (TextView) findViewById(R.id.editGameTimeField);
 		timeTextView.setText(timeText);
 	
+	}
+
+	/**
+	 * Prepares the activity's contents according to the intent's contents.
+	 * If an old record exists, load up it's data into the activity's views.
+	 * 
+	 * @return the success of the operation
+	 */
+	protected boolean prepareFromIntent() {
+		
+		Bundle bundle = getIntent().getExtras();
+
+		if ( bundle != null && bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME) &&
+				   bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_ID) ) {
+			
+			//A new game is being created
+			
+			mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
+			mCourseId = bundle.getInt(ZeroIronDbAdapter.KEY_COURSE_ID);
+			
+		} else if ( bundle != null && bundle.containsKey(ZeroIronGameStructure.GAME_STRUCTURE) &&
+				bundle.containsKey(ZeroIronDbAdapter.KEY_COURSE_NAME)) {
+			
+			//An existing game is being edited
+			
+			mOldGameStructure = (ZeroIronGameStructure) bundle.getSerializable(ZeroIronGameStructure.GAME_STRUCTURE);
+			mCourseId = mOldGameStructure.getCourseId();
+			mActiveCalendar = mOldGameStructure.getDate();
+			
+			//populate fields using game structure
+			
+			EditText gameNameText = (EditText) findViewById(R.id.editGameName);
+			gameNameText.setText(mOldGameStructure.getName());
+			
+			EditText gameNotesText = (EditText) findViewById(R.id.editGameNotes);
+			gameNotesText.setText(mOldGameStructure.getNotes());
+			
+			EditText gameScoreText = (EditText) findViewById(R.id.editGameScore);
+			String tmp = new String( "" + mOldGameStructure.getScore());
+			gameScoreText.setText(tmp);
+						
+		} else {
+			Toast.makeText(this, "ERR: Intent contents corrupt", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		
+		//populate course name
+		mCourseName = bundle.getString(ZeroIronDbAdapter.KEY_COURSE_NAME);
+		TextView textNameView = (TextView) findViewById(R.id.textCourseNameValue);
+		textNameView.setText(mCourseName);
+		
+		//populate date
+		this.onDateSet(null,
+				mActiveCalendar.get(Calendar.YEAR),
+				mActiveCalendar.get(Calendar.MONTH),
+				mActiveCalendar.get(Calendar.DAY_OF_MONTH));
+		
+		//populate time
+		this.onTimeSet(null,
+				mActiveCalendar.get(Calendar.HOUR),
+				mActiveCalendar.get(Calendar.MINUTE));
+		
+		return true;
+	}
+	
+	/**
+	 * Links the action listeners for the activity
+	 * (ok, cancel date and time changers)
+	 * 
+	 * @return the success of the operation
+	 */
+	protected boolean setButtonListeners() {
+
+		mOkButton = (ImageView) findViewById(R.id.imageOk);
+		mCancelButton = (ImageView) findViewById(R.id.imageCancel);
+		mDateChangeButton = (ImageButton) findViewById(R.id.editGameDateButton);
+		mTimeChangeButton = (ImageButton) findViewById(R.id.editGameTimeButton);
+		
+		mOkButton.setOnClickListener(this);
+		mCancelButton.setOnClickListener(this);
+		mDateChangeButton.setOnClickListener(this);
+		mTimeChangeButton.setOnClickListener(this);
+		
+		return true;
 	}
 	
 }

@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -14,6 +18,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+/**
+ * Activity used to display the list of course data to the user.
+ */
 public class ZeroIronCourseList extends ListActivity implements OnItemLongClickListener, EditDeletePopupInvoker {
 
 	protected ZeroIronDbAdapter mDbAdapter;
@@ -38,7 +45,10 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		listView.setOnItemLongClickListener(this);
 
 	}
-
+	
+	/**
+	 * updates the ListView in the activity wirh course data.
+	 */
     private void fillData() {
 
         // Get all of the notes from the database and create the item list
@@ -165,6 +175,9 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
         
     }
     
+    /**
+	 * Generates sample courses in the database.
+	 */
     private void generateCourses() {
 
 		//create course structures and send over to the dbAdapter.
@@ -202,6 +215,7 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		
 	}
 
 	@Override
@@ -240,6 +254,11 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		return true;
 	}
 	
+	/**
+	 * Invoked by the EditDeletePopupInvoker, this method retrieves the selected item
+	 * and loads up a ZeroIronCourseEdit activity with the selected course via intent.
+	 * @param rowId The row id of the selected course in the ListView
+	 */
 	public void editButtonClicked(int rowId) {
 		
 		//1 - retrieve parameters from user selection
@@ -260,6 +279,13 @@ public class ZeroIronCourseList extends ListActivity implements OnItemLongClickL
 		startActivityForResult(i, COURSE_EDIT_ACTIVITY_ID);
 	}
 	
+	/**
+	 * Invoked by the EditDeletePopupInvoker, this method attempts to delete the course entry
+	 * from the database. The function will return unsuccessful if there exists a game record
+	 * in the database that references the course.
+	 * 
+	 * @param rowId The row id of the selected course in the ListView
+	 */
 	public void deleteButtonClicked(int rowId) {
 		//get a handle on the name of the course at location 'rowId'
 		ListView listView = this.getListView();

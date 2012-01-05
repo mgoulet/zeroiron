@@ -1,34 +1,34 @@
-------------------------
+--------------------------
+APPLICATION NAME ON MARKET
+--------------------------
+ZeroIron Golf Game Tracker
+
+--------------------------
+APPLICATION HIGHLIGHTS
+--------------------------
+-TabHost container for main activities
+-Sqlite database
+-using GregorianCalendar and SimpleDateFormater for storing
+-Menus: classic options and image popup menus
+-ListView Transparency
+-Cross-table ListView data using custom ViewBinders
+-Date & Time popup controls
+-simple & clean UI
+
+--------------------------
 CURRENT COMMIT NOTES
-------------------------
--adjusted about page
--restrict deletion of courses if there exists a game in the system that links to it
--restrict saving a course if an existing course has the same name
--unique course list
--unique games list
+--------------------------
+-fix tabHost text for minSDKversion
+-make keyboard push up activities for useability
+-test on different screen sizes with emulator
+-screenshots
 
-------------------------
-REMAINING THINGS:
-------------------------
--code documentation
--feature list
--Ads support
-
-------------------------
+--------------------------
 IDEAS:
-------------------------
+--------------------------
+-Ads support
 -Use Google backup service 
 -Add settings to app
 -Twitter support
 -Add row sorting
--move to game list once game is created from a selected course
--refactor code
-	-Add various comments to codebase
-	-rename widgets with appropriate names
--Add description to the app on github (README) that will describe the goal & contents of the app.
--Create quick description for app on market
-
-
-
-
 

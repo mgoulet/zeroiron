@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -7,6 +11,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * This class contains the contents of a game for the application.
+ */
 public class ZeroIronGameStructure implements Serializable {
     
 	public static final String GAME_STRUCTURE = "GAME_STRUCTURE";

@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * The code in this file originates from code by qberticus
+ */
+
+package com.mg.ZeroIron;
 
 import android.content.Context;
 import android.graphics.Rect;

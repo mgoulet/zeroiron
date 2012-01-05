@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
@@ -71,7 +75,7 @@
 		android:orientation="vertical"
 		android:layout_width="match_parent" android:layout_height="104dp">
 		  	<TextView android:textColor="#FFFFFF" android:id="@+id/TextNotesLabel" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:textStyle="bold" android:text="Notes"></TextView>
-		  	<EditText android:layout_width="match_parent" android:id="@+id/editGameNotes" android:layout_height="80dp" android:maxLength="20" android:text=""
+		  	<EditText android:layout_width="match_parent" android:id="@+id/editGameNotes" android:layout_height="80dp" android:maxLength="60" android:text=""
 		  		android:singleLine="false" android:lines="2"/>
     	 </LinearLayout>
 	<TableLayout android:orientation="horizontal"
@@ -83,5 +87,6 @@
 			<ImageButton android:src="@drawable/b_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageCancel"></ImageButton>
 		</TableRow>
 	</TableLayout>    
-    
+
 </LinearLayout>
+</ScrollView>

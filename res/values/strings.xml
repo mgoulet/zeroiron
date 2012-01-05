@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppWelcome">Welcome to ZeroIron</string>
+    <string name="AppWelcome">ZeroIron v1.0</string>
     <string name="app_name">ZeroIron</string>
     <string name="empty_list">Empty</string>
     <string name="menu_reset">RESET</string>

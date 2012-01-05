@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -6,6 +10,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
+/**
+ * This class represents the main tab activity.
+ */
 public class ZeroIronMain extends TabActivity {
 
 	@Override

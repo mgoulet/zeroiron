@@ -7,7 +7,7 @@
   	<LinearLayout
   		android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="56dp">
 	      		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-					android:text="Le About"
+					android:text="About (Version 1.0)"
 			   		android:layout_height="wrap_content"
 			   		android:layout_width="wrap_content"
 			   		android:textStyle="bold"
@@ -47,7 +47,7 @@
 		<TextView android:id="@+id/textView2"
 	        	android:layout_width="match_parent"
 	        	android:textSize="6pt"
-	        	android:text="The goal of this project is to experiment with various Android development features by developing a simple application allowing the user to track his or her golf games. feedback is appreciated. Enjoy!"
+	        	android:text="The goal of this project is to experiment with the Android platform. This simple app allows the user to track his or her golf games. Full repo access is available on Github, help yourself. feedback is appreciated. Enjoy!"
 	        	android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="152dp"></TextView>
 	</LinearLayout>
 

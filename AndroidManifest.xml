@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.example.android.ZeroIron"
+      package="com.mg.ZeroIron"
       android:versionCode="1"
       android:versionName="1.0">
+    <uses-sdk
+    	android:minSdkVersion="3"
+    	android:targetSdkVersion="3"/>
     <application android:icon="@drawable/ball48" android:label="@string/app_name"
     			 android:name=".ZeroIronApplication">
         <activity android:name=".ZeroIronSplash"
@@ -37,5 +40,16 @@
         <activity android:name=".ZeroIronSettings"
                     android:label="@string/app_name" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden">
         </activity>
+        
+        <!-- 
+        <activity android:name="com.google.ads.Activity"
+        			android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+        -->
+        
     </application>
+	
+	<uses-permission android:name="android.permission.INTERNET"/>
+  	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>   
+    
 </manifest>
+

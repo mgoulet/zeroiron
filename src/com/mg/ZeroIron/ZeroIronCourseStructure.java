@@ -1,7 +1,14 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import java.io.Serializable;
 
+/**
+ * This class contains the contents of a course for the application.
+ */
 public class ZeroIronCourseStructure implements Serializable {
 
 	private static final long serialVersionUID = 1L;

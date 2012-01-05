@@ -1,7 +1,14 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import android.app.backup.BackupAgentHelper;
 
+/**
+ * Main applicaiton class
+ */
 public class ZeroIronApplication extends android.app.Application {
 
 	private static ZeroIronApplication mInstance;

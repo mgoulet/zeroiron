@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import java.util.Random;
 import java.util.Calendar;
@@ -18,6 +22,9 @@ import android.widget.RadioButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+/**
+ * This class contains settings activity (turned into a simple About page).
+ */
 public class ZeroIronSettings extends Activity {
 
 	private ZeroIronDbAdapter mDbAdapter;

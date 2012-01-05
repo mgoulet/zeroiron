@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -15,6 +19,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+/**
+ * Activity used to display the list of course data to the user.
+ */
 public class ZeroIronGamesList extends ListActivity implements OnItemLongClickListener, EditDeletePopupInvoker {
 
 	//to be refactored
@@ -187,7 +194,10 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
         return super.onMenuItemSelected(featureId, item);
     }
     
-    //This method to be updated drastically to reinforce integrity with courses table.
+    
+    /**
+	 * Generates sample courses in the database. Unused.
+	 */
     private void generateGames() {
     	//build scores    	
     	for (int i=0; i<3; i++) {
@@ -238,6 +248,12 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 		return true;
 	}
 	
+	/**
+	 * Invoked by the EditDeletePopupInvoker, this method retrieves the selected item
+	 * and loads up a ZeroIronGameEdit activity with the selected game via intent.
+	 * 
+	 * @param rowId The row id of the selected game in the ListView
+	 */
 	public void editButtonClicked(int rowId) {
 
 		//1 - retrieve game name from user selection
@@ -266,6 +282,12 @@ public class ZeroIronGamesList extends ListActivity implements OnItemLongClickLi
 
 	}
 	
+	/**
+	 * Invoked by the EditDeletePopupInvoker, this method attempts to delete the game entry
+	 * from the database.
+	 * 
+	 * @param rowId The row id of the selected game in the ListView
+	 */
 	public void deleteButtonClicked(int rowId) {
 		//get a handle on the name of the course at location 'rowId'
 		ListView listView = this.getListView();

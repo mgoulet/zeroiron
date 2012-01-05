@@ -1,4 +1,8 @@
-package com.example.android.ZeroIron;
+/*
+ * Copyright Martin Goulet 2012 - ZeroIron
+ */
+
+package com.mg.ZeroIron;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +12,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+/**
+ * This class is the first activity on startup, a splash page.
+ */
 public class ZeroIronSplash extends Activity {
     /** Called when the activity is first created. */
     @Override
